@@ -1,0 +1,97 @@
+{
+  "checked_on": "2026-10-16",
+  "repository": "https://github.com/SAP-samples/datasphere-content",
+  "upstream_tree": "695af09278d8a57d0fb0a441f247060eaea5daf5",
+  "files": [
+    {
+      "file": "HR/DepartmentTexts.csv",
+      "upstream_path": "SAP_Sample_Content/CSV/HR/DepartmentTexts.csv",
+      "local_git_blob_sha1": "56789b83e6e5def802dc82c41ea3aefa4333c536",
+      "upstream_git_blob_sha1": "87ba0383a1fb73c91281a7a8c3eeaeccffada963",
+      "exact_match": false,
+      "normalized_git_blob_sha1": "87ba0383a1fb73c91281a7a8c3eeaeccffada963",
+      "normalized_match": true
+    },
+    {
+      "file": "HR/EmployeeHeadcount.csv",
+      "upstream_path": "SAP_Sample_Content/CSV/HR/EmployeeHeadcount.csv",
+      "local_git_blob_sha1": "2669bdfefa399ea03656aa38a2d0987cf986dbed",
+      "upstream_git_blob_sha1": "2139e8da3264292d7aa9239a2c5f27f0ee9ab042",
+      "exact_match": false,
+      "normalized_git_blob_sha1": "2139e8da3264292d7aa9239a2c5f27f0ee9ab042",
+      "normalized_match": true
+    },
+    {
+      "file": "HR/EmployeePersonalData.csv",
+      "upstream_path": "SAP_Sample_Content/CSV/HR/EmployeePersonalData.csv",
+      "local_git_blob_sha1": "7e2a32895d82f7753e53177098d5b47ce00fb0b5",
+      "upstream_git_blob_sha1": "a08d06e6cb29798597376de41647450ecde972ff",
+      "exact_match": false,
+      "normalized_git_blob_sha1": "a08d06e6cb29798597376de41647450ecde972ff",
+      "normalized_match": true
+    },
+    {
+      "file": "HR/HRManager.csv",
+      "upstream_path": "SAP_Sample_Content/CSV/HR/HRManager.csv",
+      "local_git_blob_sha1": "fec91b19cfe1d97a5de2a7c9cba89e117b4f4494",
+      "upstream_git_blob_sha1": "4d9f239b3b70fbccc2f2591926263cf48d093705",
+      "exact_match": false,
+      "normalized_git_blob_sha1": "4d9f239b3b70fbccc2f2591926263cf48d093705",
+      "normalized_match": true
+    },
+    {
+      "file": "FI/FinancialTransactions.csv",
+      "upstream_path": "SAP_Sample_Content/CSV/FI/FinancialTransactions.csv",
+      "local_git_blob_sha1": "b753e7b110a844f59c852bf9a68aa45ad3129604",
+      "upstream_git_blob_sha1": "2a6220ddc9280f451b5448de1cfe1e68ade4c48b",
+      "exact_match": false,
+      "normalized_git_blob_sha1": "2a6220ddc9280f451b5448de1cfe1e68ade4c48b",
+      "normalized_match": true
+    },
+    {
+      "file": "FI/GLAccountsTexts.csv",
+      "upstream_path": "SAP_Sample_Content/CSV/FI/GLAccountsTexts.csv",
+      "local_git_blob_sha1": "f41d0d76d367a58820bf60d41621fe91a2a1ef2b",
+      "upstream_git_blob_sha1": "debde9a023c456e5d9c5af90e31d0b95cd7ef915",
+      "exact_match": false,
+      "normalized_git_blob_sha1": "debde9a023c456e5d9c5af90e31d0b95cd7ef915",
+      "normalized_match": true
+    },
+    {
+      "file": "FI/ProfitCenterTexts.csv",
+      "upstream_path": "SAP_Sample_Content/CSV/FI/ProfitCenterTexts.csv",
+      "local_git_blob_sha1": "b532eacc156d710e03a7becbe99cf26e1e4815f6",
+      "upstream_git_blob_sha1": "bcd69b3b17274f98ed74fb29d15d4028e8ffd040",
+      "exact_match": false,
+      "normalized_git_blob_sha1": "bcd69b3b17274f98ed74fb29d15d4028e8ffd040",
+      "normalized_match": true
+    },
+    {
+      "file": "Sales/BusinessPartners.csv",
+      "upstream_path": "SAP_Sample_Content/CSV/Sales/BusinessPartners.csv",
+      "local_git_blob_sha1": "aa156e76d38feb8c89e36c285e761e8b7a8c5f78",
+      "upstream_git_blob_sha1": "41febbabd224d1f8c4c5b762d9fd596f92b9783c",
+      "exact_match": false,
+      "normalized_git_blob_sha1": "41febbabd224d1f8c4c5b762d9fd596f92b9783c",
+      "normalized_match": true
+    },
+    {
+      "file": "Sales/SalesOrderItems.csv",
+      "upstream_path": "SAP_Sample_Content/CSV/Sales/SalesOrderItems.csv",
+      "local_git_blob_sha1": "e4649d188742758bd0936bd007162f3bd787cc3b",
+      "upstream_git_blob_sha1": "eea7547ee5065beadbffc08956e9e727a2317eef",
+      "exact_match": false,
+      "normalized_git_blob_sha1": "6f80eb5e714e11efd85c658918a00e0814aa9248",
+      "normalized_match": false
+    },
+    {
+      "file": "Sales/SalesOrders.csv",
+      "upstream_path": "SAP_Sample_Content/CSV/Sales/SalesOrders.csv",
+      "local_git_blob_sha1": "955f0aa15fda8b153a08e8f5c508b93f31ced45c",
+      "upstream_git_blob_sha1": "2dfc62270800ac868d55072b38bfdb6d07048635",
+      "exact_match": false,
+      "normalized_git_blob_sha1": "02eb41d101925d37dafcad7b4189e57d6ddb9e4c",
+      "normalized_match": false
+    }
+  ]
+}

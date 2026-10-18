@@ -1,0 +1,996 @@
+{
+  "definitions": {
+    "FI_ACTUAL_VS_BUDGET": {
+      "kind": "entity",
+      "elements": {
+        "TRANSACTIONID": {
+          "@EndUserText.label": "TRANSACTIONID",
+          "type": "cds.Integer64",
+          "key": true,
+          "notNull": true
+        },
+        "ACCOUNTTYPEID": {
+          "@EndUserText.label": "ACCOUNTTYPEID",
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUSTOMERID": {
+          "@EndUserText.label": "CUSTOMERID",
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUSTOMERTYPEID": {
+          "@EndUserText.label": "CUSTOMERTYPEID",
+          "type": "cds.String",
+          "length": 5000
+        },
+        "PRODUCTID": {
+          "@EndUserText.label": "PRODUCTID",
+          "type": "cds.String",
+          "length": 5000
+        },
+        "PRODUCTCATEGORYID": {
+          "@EndUserText.label": "PRODUCTCATEGORYID",
+          "type": "cds.String",
+          "length": 5000
+        },
+        "VERSION": {
+          "@EndUserText.label": "VERSION",
+          "type": "cds.String",
+          "length": 5000
+        },
+        "DATE": {
+          "@EndUserText.label": "DATE",
+          "type": "cds.Date"
+        },
+        "VALUE": {
+          "@EndUserText.label": "VALUE",
+          "precision": 38,
+          "scale": 19,
+          "type": "cds.Decimal"
+        },
+        "ACCOUNTID": {
+          "@EndUserText.label": "ACCOUNTID",
+          "type": "cds.String",
+          "length": 5000,
+          "key": true,
+          "notNull": true
+        },
+        "LANGUAGE": {
+          "@EndUserText.label": "LANGUAGE",
+          "type": "cds.String",
+          "length": 5000,
+          "key": true,
+          "notNull": true
+        },
+        "Account_Name": {
+          "@EndUserText.label": "Account Name",
+          "type": "cds.String",
+          "length": 5000
+        },
+        "PROFITCENTERID": {
+          "@EndUserText.label": "PROFITCENTERID",
+          "type": "cds.String",
+          "length": 5000,
+          "key": true,
+          "notNull": true
+        },
+        "SHORT_DESCR": {
+          "@EndUserText.label": "SHORT_DESCR",
+          "type": "cds.String",
+          "length": 5000
+        },
+        "Profit_Center_Name": {
+          "@EndUserText.label": "Profit Center Name",
+          "type": "cds.String",
+          "length": 5000
+        },
+        "ACTUAL_AMOUNT": {
+          "@EndUserText.label": "ACTUAL_AMOUNT",
+          "precision": 38,
+          "scale": 19,
+          "type": "cds.Decimal",
+          "@AnalyticsDetails.measureType": {
+            "#": "BASE"
+          },
+          "@Aggregation.default": {
+            "#": "SUM"
+          }
+        },
+        "LONG_DESCR": {
+          "@EndUserText.label": "LONG_DESCR",
+          "type": "cds.String",
+          "length": 5000
+        },
+        "BUDGET_AMOUNT": {
+          "@EndUserText.label": "BUDGET_AMOUNT",
+          "precision": 38,
+          "scale": 19,
+          "type": "cds.Decimal",
+          "@AnalyticsDetails.measureType": {
+            "#": "BASE"
+          },
+          "@Aggregation.default": {
+            "#": "SUM"
+          }
+        },
+        "BUDGET_RECORD_COUNT": {
+          "@EndUserText.label": "Budget Record Count",
+          "type": "cds.Integer",
+          "@AnalyticsDetails.measureType": {
+            "#": "BASE"
+          },
+          "@Aggregation.default": {
+            "#": "SUM"
+          }
+        },
+        "Month": {
+          "@EndUserText.label": "Month",
+          "type": "cds.String",
+          "length": 5000
+        }
+      },
+      "query": {
+        "SELECT": {
+          "from": {
+            "SELECT": {
+              "from": {
+                "SELECT": {
+                  "from": {
+                    "join": "left",
+                    "cardinality": {
+                      "max": 1
+                    },
+                    "args": [
+                      {
+                        "SELECT": {
+                          "from": {
+                            "join": "left",
+                            "cardinality": {
+                              "max": 1
+                            },
+                            "args": [
+                              {
+                                "ref": [
+                                  "FI_FINANCIAL_TRANSACTIONS"
+                                ],
+                                "as": "FI_FINANCIAL_TRANSACTIONS"
+                              },
+                              {
+                                "SELECT": {
+                                  "from": {
+                                    "ref": [
+                                      "FI_ACCOUNT_TEXTS"
+                                    ]
+                                  },
+                                  "columns": [
+                                    {
+                                      "ref": [
+                                        "ACCOUNTID"
+                                      ],
+                                      "key": true
+                                    },
+                                    {
+                                      "ref": [
+                                        "LANGUAGE"
+                                      ],
+                                      "key": true
+                                    },
+                                    {
+                                      "ref": [
+                                        "MEDIUM_DESCR"
+                                      ]
+                                    }
+                                  ],
+                                  "where": [
+                                    {
+                                      "ref": [
+                                        "FI_ACCOUNT_TEXTS",
+                                        "LANGUAGE"
+                                      ]
+                                    },
+                                    "=",
+                                    {
+                                      "val": "EN"
+                                    }
+                                  ]
+                                },
+                                "as": "Filter 1"
+                              }
+                            ],
+                            "on": [
+                              {
+                                "ref": [
+                                  "FI_FINANCIAL_TRANSACTIONS",
+                                  "ACCOUNTID"
+                                ]
+                              },
+                              "=",
+                              {
+                                "ref": [
+                                  "Filter 1",
+                                  "ACCOUNTID"
+                                ]
+                              }
+                            ]
+                          },
+                          "columns": [
+                            {
+                              "ref": [
+                                "FI_FINANCIAL_TRANSACTIONS",
+                                "TRANSACTIONID"
+                              ],
+                              "key": true
+                            },
+                            {
+                              "ref": [
+                                "Filter 1",
+                                "ACCOUNTID"
+                              ],
+                              "as": "Filter1_ACCOUNTID",
+                              "key": true
+                            },
+                            {
+                              "ref": [
+                                "FI_FINANCIAL_TRANSACTIONS",
+                                "ACCOUNTID"
+                              ]
+                            },
+                            {
+                              "ref": [
+                                "Filter 1",
+                                "LANGUAGE"
+                              ],
+                              "key": true
+                            },
+                            {
+                              "ref": [
+                                "FI_FINANCIAL_TRANSACTIONS",
+                                "ACCOUNTTYPEID"
+                              ]
+                            },
+                            {
+                              "ref": [
+                                "Filter 1",
+                                "MEDIUM_DESCR"
+                              ]
+                            },
+                            {
+                              "ref": [
+                                "FI_FINANCIAL_TRANSACTIONS",
+                                "CUSTOMERID"
+                              ]
+                            },
+                            {
+                              "ref": [
+                                "FI_FINANCIAL_TRANSACTIONS",
+                                "CUSTOMERTYPEID"
+                              ]
+                            },
+                            {
+                              "ref": [
+                                "FI_FINANCIAL_TRANSACTIONS",
+                                "PRODUCTID"
+                              ]
+                            },
+                            {
+                              "ref": [
+                                "FI_FINANCIAL_TRANSACTIONS",
+                                "PRODUCTCATEGORYID"
+                              ]
+                            },
+                            {
+                              "ref": [
+                                "FI_FINANCIAL_TRANSACTIONS",
+                                "PROFITCENTERID"
+                              ]
+                            },
+                            {
+                              "ref": [
+                                "FI_FINANCIAL_TRANSACTIONS",
+                                "VERSION"
+                              ]
+                            },
+                            {
+                              "ref": [
+                                "FI_FINANCIAL_TRANSACTIONS",
+                                "DATE"
+                              ]
+                            },
+                            {
+                              "ref": [
+                                "FI_FINANCIAL_TRANSACTIONS",
+                                "VALUE"
+                              ]
+                            }
+                          ]
+                        },
+                        "as": "Join 1"
+                      },
+                      {
+                        "SELECT": {
+                          "from": {
+                            "ref": [
+                              "FI_PROFIT_CENTER_TEXTS"
+                            ]
+                          },
+                          "columns": [
+                            {
+                              "ref": [
+                                "PROFITCENTERID"
+                              ],
+                              "key": true
+                            },
+                            {
+                              "ref": [
+                                "LANGUAGE"
+                              ]
+                            },
+                            {
+                              "ref": [
+                                "SHORT_DESCR"
+                              ]
+                            },
+                            {
+                              "ref": [
+                                "MEDIUM_DESCR"
+                              ]
+                            },
+                            {
+                              "ref": [
+                                "LONG_DESCR"
+                              ]
+                            }
+                          ],
+                          "where": [
+                            {
+                              "ref": [
+                                "FI_PROFIT_CENTER_TEXTS",
+                                "LANGUAGE"
+                              ]
+                            },
+                            "=",
+                            {
+                              "val": "EN"
+                            }
+                          ]
+                        },
+                        "as": "Filter 2"
+                      }
+                    ],
+                    "on": [
+                      {
+                        "ref": [
+                          "Join 1",
+                          "PROFITCENTERID"
+                        ]
+                      },
+                      "=",
+                      {
+                        "ref": [
+                          "Filter 2",
+                          "PROFITCENTERID"
+                        ]
+                      }
+                    ]
+                  },
+                  "columns": [
+                    {
+                      "ref": [
+                        "Join 1",
+                        "TRANSACTIONID"
+                      ],
+                      "key": true
+                    },
+                    {
+                      "ref": [
+                        "Filter 2",
+                        "PROFITCENTERID"
+                      ],
+                      "as": "Filter2_PROFITCENTERID",
+                      "key": true
+                    },
+                    {
+                      "ref": [
+                        "Join 1",
+                        "Filter1_ACCOUNTID"
+                      ],
+                      "as": "Join1_ACCOUNTID",
+                      "key": true
+                    },
+                    {
+                      "ref": [
+                        "Filter 2",
+                        "SHORT_DESCR"
+                      ]
+                    },
+                    {
+                      "ref": [
+                        "Join 1",
+                        "LANGUAGE"
+                      ],
+                      "key": true
+                    },
+                    {
+                      "ref": [
+                        "Filter 2",
+                        "MEDIUM_DESCR"
+                      ],
+                      "as": "Filter2_MEDIUM_DESCR"
+                    },
+                    {
+                      "ref": [
+                        "Join 1",
+                        "ACCOUNTTYPEID"
+                      ]
+                    },
+                    {
+                      "ref": [
+                        "Filter 2",
+                        "LONG_DESCR"
+                      ]
+                    },
+                    {
+                      "ref": [
+                        "Join 1",
+                        "MEDIUM_DESCR"
+                      ]
+                    },
+                    {
+                      "ref": [
+                        "Join 1",
+                        "CUSTOMERID"
+                      ]
+                    },
+                    {
+                      "ref": [
+                        "Join 1",
+                        "CUSTOMERTYPEID"
+                      ]
+                    },
+                    {
+                      "ref": [
+                        "Join 1",
+                        "PRODUCTID"
+                      ]
+                    },
+                    {
+                      "ref": [
+                        "Join 1",
+                        "PRODUCTCATEGORYID"
+                      ]
+                    },
+                    {
+                      "ref": [
+                        "Join 1",
+                        "VERSION"
+                      ]
+                    },
+                    {
+                      "ref": [
+                        "Join 1",
+                        "DATE"
+                      ]
+                    },
+                    {
+                      "ref": [
+                        "Join 1",
+                        "VALUE"
+                      ]
+                    }
+                  ]
+                },
+                "as": "Join 2"
+              },
+              "columns": [
+                {
+                  "ref": [
+                    "Join 2",
+                    "TRANSACTIONID"
+                  ],
+                  "key": true
+                },
+                {
+                  "ref": [
+                    "Join 2",
+                    "Join1_ACCOUNTID"
+                  ],
+                  "as": "ACCOUNTID",
+                  "key": true
+                },
+                {
+                  "ref": [
+                    "Join 2",
+                    "Filter2_PROFITCENTERID"
+                  ],
+                  "as": "PROFITCENTERID",
+                  "key": true
+                },
+                {
+                  "ref": [
+                    "Join 2",
+                    "LANGUAGE"
+                  ],
+                  "key": true
+                },
+                {
+                  "ref": [
+                    "Join 2",
+                    "ACCOUNTTYPEID"
+                  ]
+                },
+                {
+                  "ref": [
+                    "Join 2",
+                    "MEDIUM_DESCR"
+                  ],
+                  "as": "Account_Name"
+                },
+                {
+                  "ref": [
+                    "Join 2",
+                    "SHORT_DESCR"
+                  ]
+                },
+                {
+                  "ref": [
+                    "Join 2",
+                    "CUSTOMERID"
+                  ]
+                },
+                {
+                  "ref": [
+                    "Join 2",
+                    "Filter2_MEDIUM_DESCR"
+                  ],
+                  "as": "Profit_Center_Name"
+                },
+                {
+                  "ref": [
+                    "Join 2",
+                    "CUSTOMERTYPEID"
+                  ]
+                },
+                {
+                  "ref": [
+                    "Join 2",
+                    "LONG_DESCR"
+                  ]
+                },
+                {
+                  "ref": [
+                    "Join 2",
+                    "PRODUCTID"
+                  ]
+                },
+                {
+                  "ref": [
+                    "Join 2",
+                    "PRODUCTCATEGORYID"
+                  ]
+                },
+                {
+                  "ref": [
+                    "Join 2",
+                    "VERSION"
+                  ]
+                },
+                {
+                  "xpr": [
+                    "case",
+                    "when",
+                    {
+                      "ref": [
+                        "Join 2",
+                        "VERSION"
+                      ]
+                    },
+                    "=",
+                    {
+                      "val": "Actual"
+                    },
+                    "then",
+                    {
+                      "ref": [
+                        "Join 2",
+                        "VALUE"
+                      ]
+                    },
+                    "else",
+                    {
+                      "val": 0
+                    },
+                    "end"
+                  ],
+                  "as": "ACTUAL_AMOUNT"
+                },
+                {
+                  "xpr": [
+                    "case",
+                    "when",
+                    {
+                      "ref": [
+                        "Join 2",
+                        "VERSION"
+                      ]
+                    },
+                    "=",
+                    {
+                      "val": "Budget"
+                    },
+                    "then",
+                    {
+                      "ref": [
+                        "Join 2",
+                        "VALUE"
+                      ]
+                    },
+                    "else",
+                    {
+                      "val": 0
+                    },
+                    "end"
+                  ],
+                  "as": "BUDGET_AMOUNT"
+                },
+                {
+                  "ref": [
+                    "Join 2",
+                    "DATE"
+                  ]
+                },
+                {
+                  "xpr": [
+                    "case",
+                    "when",
+                    {
+                      "ref": [
+                        "Join 2",
+                        "VERSION"
+                      ]
+                    },
+                    "=",
+                    {
+                      "val": "Budget"
+                    },
+                    "then",
+                    {
+                      "val": 1
+                    },
+                    "else",
+                    {
+                      "val": 0
+                    },
+                    "end"
+                  ],
+                  "as": "BUDGET_RECORD_COUNT"
+                },
+                {
+                  "ref": [
+                    "Join 2",
+                    "VALUE"
+                  ]
+                },
+                {
+                  "func": "TO_VARCHAR",
+                  "args": [
+                    {
+                      "ref": [
+                        "Join 2",
+                        "DATE"
+                      ]
+                    },
+                    {
+                      "val": "MM"
+                    }
+                  ],
+                  "as": "Month"
+                }
+              ]
+            },
+            "as": "Calculated Columns 1"
+          },
+          "columns": [
+            {
+              "ref": [
+                "TRANSACTIONID"
+              ],
+              "key": true
+            },
+            {
+              "ref": [
+                "ACCOUNTTYPEID"
+              ]
+            },
+            {
+              "ref": [
+                "CUSTOMERID"
+              ]
+            },
+            {
+              "ref": [
+                "CUSTOMERTYPEID"
+              ]
+            },
+            {
+              "ref": [
+                "PRODUCTID"
+              ]
+            },
+            {
+              "ref": [
+                "PRODUCTCATEGORYID"
+              ]
+            },
+            {
+              "ref": [
+                "VERSION"
+              ]
+            },
+            {
+              "ref": [
+                "DATE"
+              ]
+            },
+            {
+              "ref": [
+                "VALUE"
+              ]
+            },
+            {
+              "ref": [
+                "ACCOUNTID"
+              ],
+              "key": true
+            },
+            {
+              "ref": [
+                "LANGUAGE"
+              ],
+              "key": true
+            },
+            {
+              "ref": [
+                "Account_Name"
+              ]
+            },
+            {
+              "ref": [
+                "PROFITCENTERID"
+              ],
+              "key": true
+            },
+            {
+              "ref": [
+                "SHORT_DESCR"
+              ]
+            },
+            {
+              "ref": [
+                "Profit_Center_Name"
+              ]
+            },
+            {
+              "ref": [
+                "ACTUAL_AMOUNT"
+              ]
+            },
+            {
+              "ref": [
+                "LONG_DESCR"
+              ]
+            },
+            {
+              "ref": [
+                "BUDGET_AMOUNT"
+              ]
+            },
+            {
+              "ref": [
+                "BUDGET_RECORD_COUNT"
+              ]
+            },
+            {
+              "ref": [
+                "Month"
+              ]
+            }
+          ]
+        }
+      },
+      "@ObjectModel.supportedCapabilities": [
+        {
+          "#": "DATA_STRUCTURE"
+        }
+      ],
+      "@EndUserText.label": "Finance Actual vs Budget",
+      "@ObjectModel.modelingPattern": {
+        "#": "ANALYTICAL_FACT"
+      },
+      "@DataWarehouse.consumption.external": false,
+      "_meta": {
+        "dependencies": {
+          "folderAssignment": "Folder_EULONDJC"
+        }
+      }
+    },
+    "FI_FINANCIAL_TRANSACTIONS": {
+      "kind": "entity",
+      "@ObjectModel.supportedCapabilities": [
+        {
+          "#": "DATA_STRUCTURE"
+        }
+      ],
+      "elements": {
+        "TRANSACTIONID": {
+          "@EndUserText.label": "TRANSACTIONID",
+          "type": "cds.Integer64",
+          "key": true,
+          "notNull": true
+        },
+        "ACCOUNTID": {
+          "@EndUserText.label": "ACCOUNTID",
+          "type": "cds.String",
+          "length": 5000
+        },
+        "ACCOUNTTYPEID": {
+          "@EndUserText.label": "ACCOUNTTYPEID",
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUSTOMERID": {
+          "@EndUserText.label": "CUSTOMERID",
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUSTOMERTYPEID": {
+          "@EndUserText.label": "CUSTOMERTYPEID",
+          "type": "cds.String",
+          "length": 5000
+        },
+        "PRODUCTID": {
+          "@EndUserText.label": "PRODUCTID",
+          "type": "cds.String",
+          "length": 5000
+        },
+        "PRODUCTCATEGORYID": {
+          "@EndUserText.label": "PRODUCTCATEGORYID",
+          "type": "cds.String",
+          "length": 5000
+        },
+        "PROFITCENTERID": {
+          "@EndUserText.label": "PROFITCENTERID",
+          "type": "cds.String",
+          "length": 5000
+        },
+        "VERSION": {
+          "@EndUserText.label": "VERSION",
+          "type": "cds.String",
+          "length": 5000
+        },
+        "DATE": {
+          "@EndUserText.label": "DATE",
+          "type": "cds.Date"
+        },
+        "VALUE": {
+          "@EndUserText.label": "VALUE",
+          "precision": 38,
+          "scale": 19,
+          "type": "cds.Decimal"
+        }
+      },
+      "@EndUserText.label": "FinancialTransactions",
+      "@ObjectModel.modelingPattern": {
+        "#": "DATA_STRUCTURE"
+      },
+      "@DataWarehouse.dataSource.schema": "SPACE_00029840#WRG_7XUOK1MULF1Y31T3",
+      "@DataWarehouse.dataSource.entity": "sap.dataset.conf_54181541-180c-4eec-8ec4-6382587b362d_view",
+      "_meta": {
+        "dependencies": {
+          "folderAssignment": "Folder_EULONDJC"
+        }
+      }
+    },
+    "FI_ACCOUNT_TEXTS": {
+      "kind": "entity",
+      "@ObjectModel.modelingPattern": {
+        "#": "DATA_STRUCTURE"
+      },
+      "@ObjectModel.supportedCapabilities": [
+        {
+          "#": "DATA_STRUCTURE"
+        }
+      ],
+      "@DataWarehouse.dataSource.schema": "SPACE_00029840#WRG_7XUOK1MULF1Y31T3",
+      "@DataWarehouse.dataSource.entity": "sap.dataset.conf_23bc20f3-f340-4eb1-9662-e0e0e3ff3f2c_view",
+      "@EndUserText.label": "GLAccountsTexts",
+      "elements": {
+        "ACCOUNTID": {
+          "type": "cds.String",
+          "length": 5000,
+          "key": true,
+          "@EndUserText.label": "ACCOUNTID"
+        },
+        "LANGUAGE": {
+          "type": "cds.String",
+          "length": 5000,
+          "key": true,
+          "@EndUserText.label": "LANGUAGE"
+        },
+        "MEDIUM_DESCR": {
+          "type": "cds.String",
+          "length": 5000,
+          "@EndUserText.label": "MEDIUM_DESCR"
+        }
+      },
+      "_meta": {
+        "dependencies": {
+          "folderAssignment": "Folder_EULONDJC"
+        }
+      }
+    },
+    "FI_PROFIT_CENTER_TEXTS": {
+      "kind": "entity",
+      "@ObjectModel.modelingPattern": {
+        "#": "DATA_STRUCTURE"
+      },
+      "@ObjectModel.supportedCapabilities": [
+        {
+          "#": "DATA_STRUCTURE"
+        }
+      ],
+      "@DataWarehouse.dataSource.schema": "SPACE_00029840#WRG_7XUOK1MULF1Y31T3",
+      "@DataWarehouse.dataSource.entity": "sap.dataset.conf_62d84a2a-103c-406d-bff4-cfe361aeaecf_view",
+      "@EndUserText.label": "ProfitCenterTexts",
+      "elements": {
+        "PROFITCENTERID": {
+          "type": "cds.String",
+          "length": 5000,
+          "key": true,
+          "@EndUserText.label": "PROFITCENTERID"
+        },
+        "LANGUAGE": {
+          "type": "cds.String",
+          "length": 5000,
+          "@EndUserText.label": "LANGUAGE"
+        },
+        "SHORT_DESCR": {
+          "type": "cds.String",
+          "length": 5000,
+          "@EndUserText.label": "SHORT_DESCR"
+        },
+        "MEDIUM_DESCR": {
+          "type": "cds.String",
+          "length": 5000,
+          "@EndUserText.label": "MEDIUM_DESCR"
+        },
+        "LONG_DESCR": {
+          "type": "cds.String",
+          "length": 5000,
+          "@EndUserText.label": "LONG_DESCR"
+        }
+      },
+      "_meta": {
+        "dependencies": {
+          "folderAssignment": "Folder_EULONDJC"
+        }
+      }
+    }
+  },
+  "version": {
+    "csn": "1.0"
+  },
+  "meta": {
+    "creator": "CDS Compiler v1.19.2"
+  },
+  "editorSettings": {
+    "FI_ACTUAL_VS_BUDGET": {
+      "editor": {
+        "lastModifier": "GRAPHICALVIEWBUILDER",
+        "default": "GRAPHICALVIEWBUILDER"
+      },
+      "uiModel": "{\"contents\":{\"a27947d4-91ff-4fa1-9aa4-19f61d05d6a0\":{\"classDefinition\":\"sap.cdw.querybuilder.Model\",\"name\":\"FI_ACTUAL_VS_BUDGET\",\"label\":\"Finance Actual vs Budget\",\"modificationDate\":1792307594477,\"deploymentDate\":1792307615118,\"#objectStatus\":\"1\",\"output\":\"7b0e0f0d-fd13-4a9c-983d-5a7947308ca8\",\"nodes\":{\"7b0e0f0d-fd13-4a9c-983d-5a7947308ca8\":{\"name\":\"View_1\"},\"832f30e7-f33c-4a66-871f-14d2fbb4dcf0\":{\"name\":\"FI_FINANCIAL_TRANSACTIONS\"},\"520def42-3cb6-4481-9714-f6ea592b54d6\":{\"name\":\"FI_ACCOUNT_TEXTS\"},\"d8a34619-8b8c-42ec-97f3-c8b65067c2b9\":{\"name\":\"Join 1\"},\"6f79042a-48e9-494d-b0c1-24983be778ef\":{\"name\":\"Projection 1\"},\"996783e0-8b0d-4776-9639-014ee9b78297\":{\"name\":\"Filter 1\"},\"0c481ac7-df23-4827-82e3-a2427c52a72f\":{\"name\":\"FI_PROFIT_CENTER_TEXTS\"},\"a50f2d95-4d4c-47ee-9d98-5d66f544d361\":{\"name\":\"Join 2\"},\"06d2d8df-0fdd-4516-9c8b-daed2a8b4eab\":{\"name\":\"Filter 2\"},\"af216bc2-09e2-424e-8b63-eb41d474270c\":{\"name\":\"Calculated Columns 1\"}},\"diagrams\":{\"5065c296-cbae-4878-84dd-ba4703d5898e\":{}}},\"7b0e0f0d-fd13-4a9c-983d-5a7947308ca8\":{\"classDefinition\":\"sap.cdw.querybuilder.Output\",\"name\":\"View_1\",\"type\":\"graphicView\",\"isDeltaOutboundOn\":false,\"isDeletionVector\":false,\"isPinToMemoryEnabled\":false,\"dataCategory\":\"SQLFACT\",\"isAllowConsumption\":false,\"modificationDate\":1792307594477,\"deploymentDate\":1792307615118,\"#objectStatus\":\"1\",\"elements\":{\"5954c88b-f036-4616-8fc7-616e77535e59\":{\"name\":\"TRANSACTIONID\"},\"0c05ec92-89d1-434a-8150-b5f4fb6cfbf8\":{\"name\":\"ACCOUNTTYPEID\"},\"54c2abee-6f25-45f1-b986-65bad1c025a5\":{\"name\":\"CUSTOMERID\"},\"8708d953-e5a7-468b-b75d-999305990fbd\":{\"name\":\"CUSTOMERTYPEID\"},\"4347cb45-fe70-4fe6-bb58-dbf4a2b6c0d9\":{\"name\":\"PRODUCTID\"},\"4e352d94-bfe2-433f-8961-ec30db0e820d\":{\"name\":\"PRODUCTCATEGORYID\"},\"92bf5e68-7970-4732-bdb9-f5cbc92c78f8\":{\"name\":\"VERSION\"},\"e9e78531-1f67-4f04-a838-908ee56c1fb6\":{\"name\":\"DATE\"},\"1abeb695-e0e3-4f4b-8520-487c18a67842\":{\"name\":\"VALUE\"},\"30a9bbbd-ac60-4ad0-adea-53d8ed4693ca\":{\"name\":\"ACCOUNTID\"},\"c95e976f-a13a-418b-84eb-265d5bf5a1d5\":{\"name\":\"LANGUAGE\"},\"84dc2fd0-f9d1-4e0b-93c3-640204d4d2bc\":{\"name\":\"MEDIUM_DESCR\"},\"968ea989-82df-4baa-ad82-51b8ed672ea0\":{\"name\":\"PROFITCENTERID\"},\"44ef944b-1afb-4558-acd3-d76fb2b85fa5\":{\"name\":\"SHORT_DESCR\"},\"bc3b67b6-fd74-4955-8da1-be82616c5ace\":{\"name\":\"LONG_DESCR\"},\"9189313f-2adb-4c87-a719-7cc5ac2e22c8\":{\"name\":\"MEDIUM_DESCR\"},\"c12c9ce4-e208-4262-ad42-6e3345746adb\":{\"name\":\"Calculated_1\"},\"c0fbb93a-3cb1-4abb-88a7-a039f76c03a8\":{\"name\":\"Calculated_1\"},\"0650793e-5f78-4ddb-9ef6-448f48c80432\":{\"name\":\"Calculated_1\"},\"3d32e56e-4d69-4c91-a07d-00b20fa60c74\":{\"name\":\"Calculated_1\"}}},\"832f30e7-f33c-4a66-871f-14d2fbb4dcf0\":{\"classDefinition\":\"sap.cdw.querybuilder.Entity\",\"name\":\"FI_FINANCIAL_TRANSACTIONS\",\"label\":\"FinancialTransactions\",\"type\":9,\"isDeltaOutboundOn\":false,\"isDeletionVector\":false,\"isPinToMemoryEnabled\":false,\"isAllowConsumption\":false,\"isHiddenInUi\":false,\"modificationDate\":1792149767098,\"deploymentDate\":1792149797918,\"#objectStatus\":\"1\",\"elements\":{\"c3d468e5-f318-4ea2-b047-f27b3dd86f0a\":{\"name\":\"TRANSACTIONID\"},\"3733c3f0-01e2-4017-8b71-57fc967ce73a\":{\"name\":\"ACCOUNTID\"},\"7c0cd135-131f-44b9-9248-5fba39f02bb4\":{\"name\":\"ACCOUNTTYPEID\"},\"612a3d65-c424-4dc1-9509-794a079376db\":{\"name\":\"CUSTOMERID\"},\"2caf0ceb-2f03-43e9-9893-017158ec0a7d\":{\"name\":\"CUSTOMERTYPEID\"},\"3cd75530-a800-41bf-be08-0c6310c06e70\":{\"name\":\"PRODUCTID\"},\"5c07ba71-2d79-4751-bc24-1d3af33d64c7\":{\"name\":\"PRODUCTCATEGORYID\"},\"3c3a05d3-cf30-4e7e-96c5-98bd170ec663\":{\"name\":\"PROFITCENTERID\"},\"4401d73d-2ccc-439e-8a75-95adf4ee7f05\":{\"name\":\"VERSION\"},\"9c924bce-436b-456e-801d-5e9c184a3ea8\":{\"name\":\"DATE\"},\"47535497-7d79-4f75-9d35-321020e32161\":{\"name\":\"VALUE\"}},\"successorNode\":\"d8a34619-8b8c-42ec-97f3-c8b65067c2b9\"},\"520def42-3cb6-4481-9714-f6ea592b54d6\":{\"classDefinition\":\"sap.cdw.querybuilder.Entity\",\"name\":\"FI_ACCOUNT_TEXTS\",\"label\":\"GLAccountsTexts\",\"type\":9,\"isDeltaOutboundOn\":false,\"isDeletionVector\":false,\"isPinToMemoryEnabled\":false,\"isAllowConsumption\":false,\"isHiddenInUi\":false,\"modificationDate\":1792150348363,\"deploymentDate\":1792150361581,\"#objectStatus\":\"1\",\"elements\":{\"988a9e2a-f0d8-4550-bd52-a2ca234ec226\":{\"name\":\"ACCOUNTID\"},\"4b16367e-3905-4661-af1e-82d60de27a4b\":{\"name\":\"LANGUAGE\"},\"5e5a5d14-6a54-40d1-b8fe-9f98c4c19a6b\":{\"name\":\"MEDIUM_DESCR\"}},\"successorNode\":\"996783e0-8b0d-4776-9639-014ee9b78297\"},\"d8a34619-8b8c-42ec-97f3-c8b65067c2b9\":{\"classDefinition\":\"sap.cdw.querybuilder.Join\",\"type\":\"left\",\"leftCardinality\":\"*\",\"rightCardinality\":\"0,1\",\"name\":\"Join 1\",\"mappings\":{\"7b3cde18-0262-4103-961b-302998636d4a\":{}},\"leftInput\":\"832f30e7-f33c-4a66-871f-14d2fbb4dcf0\",\"rightInput\":\"996783e0-8b0d-4776-9639-014ee9b78297\",\"elements\":{\"ecf2b22b-55e5-4944-9992-1be389b59c4b\":{\"name\":\"TRANSACTIONID\"},\"cd03b0e1-c74e-471c-875e-5389c85756ce\":{\"name\":\"ACCOUNTID\"},\"acd747f1-1d25-4e3b-a533-0a3acee1dee3\":{\"name\":\"ACCOUNTTYPEID\"},\"1f7cbbda-0bee-44c8-9419-929c1c9fb91e\":{\"name\":\"CUSTOMERID\"},\"f3645b8f-6fbb-4074-9fc3-54eb0cf98773\":{\"name\":\"CUSTOMERTYPEID\"},\"c5fc3bfd-ab7e-4e07-aa1c-846215fbd0aa\":{\"name\":\"PRODUCTID\"},\"e496def3-ab07-4ee2-911f-509f8247d957\":{\"name\":\"PRODUCTCATEGORYID\"},\"f1bc146a-9ac5-4361-9617-0b5e446bef2f\":{\"name\":\"PROFITCENTERID\"},\"0ea76c73-26dd-4d39-8756-09bb39dc86b5\":{\"name\":\"VERSION\"},\"aae2d6d3-b6cb-4ac8-a88f-c10ac33e3521\":{\"name\":\"DATE\"},\"97235f18-d2ed-4d83-88b0-1fac59959a40\":{\"name\":\"VALUE\"},\"8be59ae2-ae75-4701-9182-47bdc44dfac5\":{\"name\":\"ACCOUNTID\"},\"7359928f-9a3c-4439-aa05-e09acd71b24e\":{\"name\":\"LANGUAGE\"},\"06df2422-e056-4b9d-9420-824fa2cf1502\":{\"name\":\"MEDIUM_DESCR\"}},\"successorNode\":\"a50f2d95-4d4c-47ee-9d98-5d66f544d361\"},\"6f79042a-48e9-494d-b0c1-24983be778ef\":{\"classDefinition\":\"sap.cdw.querybuilder.RenameElements\",\"_isProjectionNode\":false,\"name\":\"Projection 1\",\"elements\":{\"25d7aa5c-bd74-4369-8bdc-629ab056bece\":{\"name\":\"TRANSACTIONID\"},\"e121ab34-275e-4780-ac7c-fdc87898a344\":{\"name\":\"ACCOUNTID\"},\"7387e2ee-a4c6-4337-aa1b-ee8c4dbb4c58\":{\"name\":\"ACCOUNTTYPEID\"},\"61244281-37d2-42d2-b47b-f394807d4378\":{\"name\":\"CUSTOMERID\"},\"da2bfd8e-48e8-4c57-b15c-f8eb78f97c29\":{\"name\":\"CUSTOMERTYPEID\"},\"3c5ae46b-c72a-4a8b-9a92-f9066cfbf096\":{\"name\":\"PRODUCTID\"},\"b603ba46-3750-4543-89ea-82eee5b706e8\":{\"name\":\"PRODUCTCATEGORYID\"},\"7ea5e414-5ab7-4065-af13-bfe6fe98894f\":{\"name\":\"PROFITCENTERID\"},\"47749403-54aa-48ff-b6b1-5da336e1d377\":{\"name\":\"VERSION\"},\"321fbc7e-21b4-484d-a8f1-e81fb1acfa08\":{\"name\":\"DATE\"},\"16471383-4ea3-446f-ae5e-e873cf0fa90e\":{\"name\":\"VALUE\"},\"b7f2647c-dc05-47b2-877d-3a46d415e0aa\":{\"name\":\"ACCOUNTID\"},\"5b7b2452-ce3f-4301-9d08-6e7df34dc40d\":{\"name\":\"LANGUAGE\"},\"6b88eae4-2a9d-435b-bd31-ccb75babd98b\":{\"name\":\"MEDIUM_DESCR\"},\"fccfd6b6-b985-41f7-87a5-86fc40e17d44\":{\"name\":\"PROFITCENTERID\"},\"eb27a6c9-f7a0-44ac-8f94-7e30e074c272\":{\"name\":\"LANGUAGE\"},\"7a650474-d865-462b-bb41-a61afa65114e\":{\"name\":\"SHORT_DESCR\"},\"0b272440-6bae-47dc-82eb-80970ddcc7c6\":{\"name\":\"MEDIUM_DESCR\"},\"c126b13c-46cc-4ab0-a479-f9c66002728b\":{\"name\":\"LONG_DESCR\"}},\"successorNode\":\"af216bc2-09e2-424e-8b63-eb41d474270c\"},\"996783e0-8b0d-4776-9639-014ee9b78297\":{\"classDefinition\":\"sap.cdw.querybuilder.Filter\",\"condition\":\"LANGUAGE = 'EN'\",\"name\":\"Filter 1\",\"elements\":{\"08095c96-15e1-4e63-a5fc-382ca3af32dd\":{\"name\":\"ACCOUNTID\"},\"a09e8aad-f25c-4b47-92f2-ada6bd29ea4e\":{\"name\":\"LANGUAGE\"},\"619cfeb6-5855-4827-8aa0-12e8ae9cc0a0\":{\"name\":\"MEDIUM_DESCR\"}},\"successorNode\":\"d8a34619-8b8c-42ec-97f3-c8b65067c2b9\"},\"0c481ac7-df23-4827-82e3-a2427c52a72f\":{\"classDefinition\":\"sap.cdw.querybuilder.Entity\",\"name\":\"FI_PROFIT_CENTER_TEXTS\",\"label\":\"ProfitCenterTexts\",\"type\":9,\"isDeltaOutboundOn\":false,\"isDeletionVector\":false,\"isPinToMemoryEnabled\":false,\"isAllowConsumption\":false,\"isHiddenInUi\":false,\"modificationDate\":1792150870864,\"deploymentDate\":1792150885327,\"#objectStatus\":\"1\",\"elements\":{\"1a5a72d4-bbf5-4701-9604-d01717ec1420\":{\"name\":\"PROFITCENTERID\"},\"ce4028fc-0754-4f02-92ed-b9f46bbfc4b8\":{\"name\":\"LANGUAGE\"},\"071815b3-d45f-4867-a327-1c443db5ab80\":{\"name\":\"SHORT_DESCR\"},\"25925080-29e1-4de6-987b-27200c1d999b\":{\"name\":\"MEDIUM_DESCR\"},\"638f7189-a6d0-499b-b764-ef58e5f3c2bb\":{\"name\":\"LONG_DESCR\"}},\"successorNode\":\"06d2d8df-0fdd-4516-9c8b-daed2a8b4eab\"},\"a50f2d95-4d4c-47ee-9d98-5d66f544d361\":{\"classDefinition\":\"sap.cdw.querybuilder.Join\",\"type\":\"left\",\"leftCardinality\":\"*\",\"rightCardinality\":\"0,1\",\"name\":\"Join 2\",\"mappings\":{\"e662eb39-2491-4475-93e3-495a77a559c2\":{}},\"leftInput\":\"d8a34619-8b8c-42ec-97f3-c8b65067c2b9\",\"rightInput\":\"06d2d8df-0fdd-4516-9c8b-daed2a8b4eab\",\"elements\":{\"458934df-f43f-4fcb-8478-9062c06abf19\":{\"name\":\"TRANSACTIONID\"},\"25f12eb1-0baf-4176-90e3-fbee739ceb66\":{\"name\":\"ACCOUNTID\"},\"149fb719-3cc0-44fc-83b9-36c091e4dfe0\":{\"name\":\"ACCOUNTTYPEID\"},\"b2a23ca5-232f-47f8-a657-0af0d4d59cea\":{\"name\":\"CUSTOMERID\"},\"ec5e941a-cb8f-4e0d-9dec-b5e5d55e761e\":{\"name\":\"CUSTOMERTYPEID\"},\"ca153458-5df9-48e3-93b5-e06bbf117997\":{\"name\":\"PRODUCTID\"},\"85fedb7c-c5ef-4cdb-91d7-cdc28f3645ab\":{\"name\":\"PRODUCTCATEGORYID\"},\"9a2bc1ed-2bf5-4343-8b3d-f284fea2244d\":{\"name\":\"PROFITCENTERID\"},\"71212bfe-7eb0-4d96-85a5-3f78d00a2c3b\":{\"name\":\"VERSION\"},\"786aae44-5dac-48b1-b08c-f4e85362af63\":{\"name\":\"DATE\"},\"77ed9b45-f62e-4235-8525-2014f83023a6\":{\"name\":\"VALUE\"},\"bc22089a-072d-4afe-baf1-2d5b00eec7ba\":{\"name\":\"ACCOUNTID\"},\"52cedd32-fd9a-41ad-86f7-f0ed5170f26c\":{\"name\":\"LANGUAGE\"},\"cd9d4834-841f-4e50-9a37-bfafb4a1f543\":{\"name\":\"MEDIUM_DESCR\"},\"9cadc799-989b-4f51-bf4a-415f6d58c1e0\":{\"name\":\"PROFITCENTERID\"},\"b3534e59-a8d5-450d-8199-cbd0c81414fc\":{\"name\":\"LANGUAGE\"},\"06cb136b-b91e-45b1-bcc8-64b1ce9e37c4\":{\"name\":\"SHORT_DESCR\"},\"49557384-2eb6-4b74-b9c5-a2ab9c01b705\":{\"name\":\"MEDIUM_DESCR\"},\"b7c602d1-7b1b-41d3-a263-9abc1203f0da\":{\"name\":\"LONG_DESCR\"}},\"successorNode\":\"6f79042a-48e9-494d-b0c1-24983be778ef\"},\"06d2d8df-0fdd-4516-9c8b-daed2a8b4eab\":{\"classDefinition\":\"sap.cdw.querybuilder.Filter\",\"condition\":\"LANGUAGE = 'EN'\",\"name\":\"Filter 2\",\"elements\":{\"e000bcee-0dd2-4124-a3bf-0ed4394504a3\":{\"name\":\"PROFITCENTERID\"},\"6254db9c-5440-4d92-bbf2-79384a13c93f\":{\"name\":\"LANGUAGE\"},\"aac94046-104b-413c-acd3-2645e21d74f8\":{\"name\":\"SHORT_DESCR\"},\"6a815650-af69-4b8f-a8e4-001c4bd2011f\":{\"name\":\"MEDIUM_DESCR\"},\"2b34e7f9-f176-4974-a489-b9db0aba3492\":{\"name\":\"LONG_DESCR\"}},\"successorNode\":\"a50f2d95-4d4c-47ee-9d98-5d66f544d361\"},\"af216bc2-09e2-424e-8b63-eb41d474270c\":{\"classDefinition\":\"sap.cdw.querybuilder.CalculatedElements\",\"name\":\"Calculated Columns 1\",\"elements\":{\"c486245c-365c-4e60-b648-11784a61cde0\":{\"name\":\"TRANSACTIONID\"},\"42aa4d34-c0cb-4d3c-be4a-b69836eacada\":{\"name\":\"ACCOUNTTYPEID\"},\"a8f0dff2-9152-409d-9a29-dc4b5baa9d6c\":{\"name\":\"CUSTOMERID\"},\"3be3486b-51c1-441d-9452-3d0e8d689d53\":{\"name\":\"CUSTOMERTYPEID\"},\"91ccd7ed-31ae-4105-885e-594d72685328\":{\"name\":\"PRODUCTID\"},\"7f5c1a95-8355-4471-8d3c-e31e20d96f99\":{\"name\":\"PRODUCTCATEGORYID\"},\"03e9f9c4-77a3-4b44-aba2-33702bc37d12\":{\"name\":\"VERSION\"},\"17f0a7e8-9bc1-4ba5-8597-b256f1c520d5\":{\"name\":\"DATE\"},\"b58edd4e-e30a-40fa-90c0-7e6698a3b001\":{\"name\":\"VALUE\"},\"8aad18d7-4d43-4feb-9a3d-d644cbd4ac13\":{\"name\":\"ACCOUNTID\"},\"92f9ec8a-9f1e-4f5e-b62f-f7909e31c64d\":{\"name\":\"LANGUAGE\"},\"8639ad5c-badf-4ae0-9179-228121281bca\":{\"name\":\"MEDIUM_DESCR\"},\"47bf80d1-5969-4cef-ae9b-cb1dc51abd99\":{\"name\":\"PROFITCENTERID\"},\"f67ff303-7e31-4855-924c-9e12088d2ac4\":{\"name\":\"SHORT_DESCR\"},\"921dffd7-b3bb-483d-88d9-6c070f26bc52\":{\"name\":\"MEDIUM_DESCR\"},\"dbc71ee7-d51d-455a-8c93-18a310a3bf00\":{\"name\":\"LONG_DESCR\"},\"178c7cd2-d3f4-4111-9170-99d9680b8b2a\":{\"name\":\"Calculated_1\"},\"c1eafbf9-2c2b-4d5c-8236-8884da85d695\":{\"name\":\"Calculated_1\"},\"bf9b839d-2383-448a-b490-e8906f6c1b56\":{\"name\":\"Calculated_1\"},\"3b6a6e5f-2e16-421e-9eaa-8bc367a2ae07\":{\"name\":\"Calculated_1\"}},\"successorNode\":\"7b0e0f0d-fd13-4a9c-983d-5a7947308ca8\"},\"5065c296-cbae-4878-84dd-ba4703d5898e\":{\"classDefinition\":\"sap.cdw.querybuilder.ui.Diagram\",\"symbols\":{\"9b7449a7-8ecb-4fb3-9d13-8f79e5ea32d6\":{},\"5b6e0f12-bf52-40e6-b2ff-0c43a9d40de4\":{\"name\":\"Entity Symbol 1\"},\"c28f7706-530c-4fe2-9138-c076f9ca3fe2\":{},\"7ef0ac34-4540-4448-8776-d0e8721304e1\":{},\"48a24b1d-f742-459f-bfda-a084a24cafb1\":{\"name\":\"Entity Symbol 2\"},\"ff72825e-8547-4827-9022-c94544b8a05a\":{},\"8f1b7071-3fa4-4f3b-a35d-593658752739\":{},\"5d8099b9-96ed-49f3-b775-8cfbe26a1428\":{},\"49408185-ea5b-4882-ae48-2b6b46ff6534\":{},\"f36673f2-8c25-4b4e-8f80-cbc2b6cb89e5\":{},\"fe267f76-39f2-479d-bb44-0f04d4472c1f\":{},\"e62ad770-5819-453f-a23e-e6d2e1fc0553\":{\"name\":\"Entity Symbol 3\"},\"7f5324b7-b674-4439-8d9e-3db8272ffd47\":{},\"e8aca213-a11c-4637-8a2f-1cc9054aa082\":{},\"325a8b1e-da08-41fb-be1f-55bfac8a6d23\":{},\"afafbe7e-310f-4ce1-b391-f569b529e1ad\":{},\"602d9f4f-aa80-48f5-b817-26b0d9a9291e\":{},\"5e769f59-6d2c-445f-ba1d-3f7bf3d1f6c1\":{},\"b995db78-8655-4135-9485-0730c0bf6380\":{}}},\"5954c88b-f036-4616-8fc7-616e77535e59\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"TRANSACTIONID\",\"label\":\"TRANSACTIONID\",\"newName\":\"TRANSACTIONID\",\"indexOrder\":0,\"isCalculated\":true,\"isKey\":true,\"dataType\":\"cds.Integer64\",\"length\":0,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true},\"0c05ec92-89d1-434a-8150-b5f4fb6cfbf8\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"ACCOUNTTYPEID\",\"label\":\"ACCOUNTTYPEID\",\"newName\":\"ACCOUNTTYPEID\",\"indexOrder\":2,\"isCalculated\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false},\"54c2abee-6f25-45f1-b986-65bad1c025a5\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"CUSTOMERID\",\"label\":\"CUSTOMERID\",\"newName\":\"CUSTOMERID\",\"indexOrder\":3,\"isCalculated\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false},\"8708d953-e5a7-468b-b75d-999305990fbd\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"CUSTOMERTYPEID\",\"label\":\"CUSTOMERTYPEID\",\"newName\":\"CUSTOMERTYPEID\",\"indexOrder\":4,\"isCalculated\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false},\"4347cb45-fe70-4fe6-bb58-dbf4a2b6c0d9\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"PRODUCTID\",\"label\":\"PRODUCTID\",\"newName\":\"PRODUCTID\",\"indexOrder\":5,\"isCalculated\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false},\"4e352d94-bfe2-433f-8961-ec30db0e820d\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"PRODUCTCATEGORYID\",\"label\":\"PRODUCTCATEGORYID\",\"newName\":\"PRODUCTCATEGORYID\",\"indexOrder\":6,\"isCalculated\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false},\"92bf5e68-7970-4732-bdb9-f5cbc92c78f8\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"VERSION\",\"label\":\"VERSION\",\"newName\":\"VERSION\",\"indexOrder\":8,\"isCalculated\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false},\"e9e78531-1f67-4f04-a838-908ee56c1fb6\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"DATE\",\"label\":\"DATE\",\"newName\":\"DATE\",\"indexOrder\":9,\"isCalculated\":true,\"dataType\":\"cds.Date\",\"length\":0,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false},\"1abeb695-e0e3-4f4b-8520-487c18a67842\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"VALUE\",\"label\":\"VALUE\",\"newName\":\"VALUE\",\"indexOrder\":10,\"isCalculated\":true,\"dataType\":\"cds.Decimal\",\"length\":0,\"precision\":38,\"scale\":19,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false},\"30a9bbbd-ac60-4ad0-adea-53d8ed4693ca\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"ACCOUNTID\",\"label\":\"ACCOUNTID\",\"newName\":\"ACCOUNTID\",\"indexOrder\":11,\"isCalculated\":true,\"isKey\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true},\"c95e976f-a13a-418b-84eb-265d5bf5a1d5\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"LANGUAGE\",\"label\":\"LANGUAGE\",\"newName\":\"LANGUAGE\",\"indexOrder\":12,\"isCalculated\":true,\"isKey\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true},\"84dc2fd0-f9d1-4e0b-93c3-640204d4d2bc\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"MEDIUM_DESCR\",\"label\":\"Account Name\",\"newName\":\"Account_Name\",\"indexOrder\":13,\"isCalculated\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false},\"968ea989-82df-4baa-ad82-51b8ed672ea0\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"PROFITCENTERID\",\"label\":\"PROFITCENTERID\",\"newName\":\"PROFITCENTERID\",\"indexOrder\":13,\"isCalculated\":true,\"isKey\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true},\"44ef944b-1afb-4558-acd3-d76fb2b85fa5\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"SHORT_DESCR\",\"label\":\"SHORT_DESCR\",\"newName\":\"SHORT_DESCR\",\"indexOrder\":15,\"isCalculated\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false},\"bc3b67b6-fd74-4955-8da1-be82616c5ace\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"LONG_DESCR\",\"label\":\"LONG_DESCR\",\"newName\":\"LONG_DESCR\",\"indexOrder\":17,\"isCalculated\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false},\"9189313f-2adb-4c87-a719-7cc5ac2e22c8\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"MEDIUM_DESCR\",\"label\":\"Profit Center Name\",\"newName\":\"Profit_Center_Name\",\"indexOrder\":15,\"isCalculated\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false},\"c12c9ce4-e208-4262-ad42-6e3345746adb\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"Calculated_1\",\"label\":\"ACTUAL_AMOUNT\",\"newName\":\"ACTUAL_AMOUNT\",\"indexOrder\":16,\"expression\":\"\",\"isCalculated\":true,\"defaultAggregation\":\"SUM\",\"dataType\":\"cds.Decimal\",\"length\":0,\"precision\":38,\"scale\":19,\"precisionsTable\":\"SAP.CURRENCY.VIEW.TCURX\",\"configurationTable\":\"SAP.CURRENCY.VIEW.TCURV\",\"prefactorsTable\":\"SAP.CURRENCY.VIEW.TCURF\",\"ratesTable\":\"SAP.CURRENCY.VIEW.TCURR\",\"notationsTable\":\"SAP.CURRENCY.VIEW.TCURN\",\"conversionCodesTable\":\"SAP.CURRENCY.VIEW.TCURC\",\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isMeasure\":true},\"c0fbb93a-3cb1-4abb-88a7-a039f76c03a8\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"Calculated_1\",\"label\":\"BUDGET_AMOUNT\",\"newName\":\"BUDGET_AMOUNT\",\"indexOrder\":17,\"expression\":\"\",\"isCalculated\":true,\"defaultAggregation\":\"SUM\",\"dataType\":\"cds.Decimal\",\"length\":0,\"precision\":38,\"scale\":19,\"precisionsTable\":\"SAP.CURRENCY.VIEW.TCURX\",\"configurationTable\":\"SAP.CURRENCY.VIEW.TCURV\",\"prefactorsTable\":\"SAP.CURRENCY.VIEW.TCURF\",\"ratesTable\":\"SAP.CURRENCY.VIEW.TCURR\",\"notationsTable\":\"SAP.CURRENCY.VIEW.TCURN\",\"conversionCodesTable\":\"SAP.CURRENCY.VIEW.TCURC\",\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isMeasure\":true},\"0650793e-5f78-4ddb-9ef6-448f48c80432\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"Calculated_1\",\"label\":\"Budget Record Count\",\"newName\":\"BUDGET_RECORD_COUNT\",\"indexOrder\":18,\"expression\":\"\",\"isCalculated\":true,\"defaultAggregation\":\"SUM\",\"dataType\":\"cds.Integer\",\"length\":0,\"precision\":0,\"scale\":0,\"precisionsTable\":\"SAP.CURRENCY.VIEW.TCURX\",\"configurationTable\":\"SAP.CURRENCY.VIEW.TCURV\",\"prefactorsTable\":\"SAP.CURRENCY.VIEW.TCURF\",\"ratesTable\":\"SAP.CURRENCY.VIEW.TCURR\",\"notationsTable\":\"SAP.CURRENCY.VIEW.TCURN\",\"conversionCodesTable\":\"SAP.CURRENCY.VIEW.TCURC\",\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isMeasure\":true},\"3d32e56e-4d69-4c91-a07d-00b20fa60c74\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"Calculated_1\",\"label\":\"Month\",\"newName\":\"Month\",\"indexOrder\":19,\"expression\":\"\",\"isCalculated\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"precisionsTable\":\"SAP.CURRENCY.VIEW.TCURX\",\"configurationTable\":\"SAP.CURRENCY.VIEW.TCURV\",\"prefactorsTable\":\"SAP.CURRENCY.VIEW.TCURF\",\"ratesTable\":\"SAP.CURRENCY.VIEW.TCURR\",\"notationsTable\":\"SAP.CURRENCY.VIEW.TCURN\",\"conversionCodesTable\":\"SAP.CURRENCY.VIEW.TCURC\",\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false},\"c3d468e5-f318-4ea2-b047-f27b3dd86f0a\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"TRANSACTIONID\",\"label\":\"TRANSACTIONID\",\"newName\":\"TRANSACTIONID\",\"indexOrder\":0,\"isKey\":true,\"dataType\":\"cds.Integer64\",\"length\":0,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true,\"successorElement\":\"ecf2b22b-55e5-4944-9992-1be389b59c4b\"},\"3733c3f0-01e2-4017-8b71-57fc967ce73a\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"ACCOUNTID\",\"label\":\"ACCOUNTID\",\"newName\":\"ACCOUNTID\",\"indexOrder\":1,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"cd03b0e1-c74e-471c-875e-5389c85756ce\"},\"7c0cd135-131f-44b9-9248-5fba39f02bb4\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"ACCOUNTTYPEID\",\"label\":\"ACCOUNTTYPEID\",\"newName\":\"ACCOUNTTYPEID\",\"indexOrder\":2,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"acd747f1-1d25-4e3b-a533-0a3acee1dee3\"},\"612a3d65-c424-4dc1-9509-794a079376db\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"CUSTOMERID\",\"label\":\"CUSTOMERID\",\"newName\":\"CUSTOMERID\",\"indexOrder\":3,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"1f7cbbda-0bee-44c8-9419-929c1c9fb91e\"},\"2caf0ceb-2f03-43e9-9893-017158ec0a7d\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"CUSTOMERTYPEID\",\"label\":\"CUSTOMERTYPEID\",\"newName\":\"CUSTOMERTYPEID\",\"indexOrder\":4,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"f3645b8f-6fbb-4074-9fc3-54eb0cf98773\"},\"3cd75530-a800-41bf-be08-0c6310c06e70\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"PRODUCTID\",\"label\":\"PRODUCTID\",\"newName\":\"PRODUCTID\",\"indexOrder\":5,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"c5fc3bfd-ab7e-4e07-aa1c-846215fbd0aa\"},\"5c07ba71-2d79-4751-bc24-1d3af33d64c7\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"PRODUCTCATEGORYID\",\"label\":\"PRODUCTCATEGORYID\",\"newName\":\"PRODUCTCATEGORYID\",\"indexOrder\":6,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"e496def3-ab07-4ee2-911f-509f8247d957\"},\"3c3a05d3-cf30-4e7e-96c5-98bd170ec663\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"PROFITCENTERID\",\"label\":\"PROFITCENTERID\",\"newName\":\"PROFITCENTERID\",\"indexOrder\":7,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"f1bc146a-9ac5-4361-9617-0b5e446bef2f\"},\"4401d73d-2ccc-439e-8a75-95adf4ee7f05\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"VERSION\",\"label\":\"VERSION\",\"newName\":\"VERSION\",\"indexOrder\":8,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"0ea76c73-26dd-4d39-8756-09bb39dc86b5\"},\"9c924bce-436b-456e-801d-5e9c184a3ea8\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"DATE\",\"label\":\"DATE\",\"newName\":\"DATE\",\"indexOrder\":9,\"dataType\":\"cds.Date\",\"length\":0,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"aae2d6d3-b6cb-4ac8-a88f-c10ac33e3521\"},\"47535497-7d79-4f75-9d35-321020e32161\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"VALUE\",\"label\":\"VALUE\",\"newName\":\"VALUE\",\"indexOrder\":10,\"dataType\":\"cds.Decimal\",\"length\":0,\"precision\":38,\"scale\":19,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"97235f18-d2ed-4d83-88b0-1fac59959a40\"},\"988a9e2a-f0d8-4550-bd52-a2ca234ec226\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"ACCOUNTID\",\"label\":\"ACCOUNTID\",\"newName\":\"ACCOUNTID\",\"indexOrder\":0,\"isKey\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true,\"successorElement\":\"08095c96-15e1-4e63-a5fc-382ca3af32dd\"},\"4b16367e-3905-4661-af1e-82d60de27a4b\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"LANGUAGE\",\"label\":\"LANGUAGE\",\"newName\":\"LANGUAGE\",\"indexOrder\":1,\"isKey\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true,\"successorElement\":\"a09e8aad-f25c-4b47-92f2-ada6bd29ea4e\"},\"5e5a5d14-6a54-40d1-b8fe-9f98c4c19a6b\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"MEDIUM_DESCR\",\"label\":\"MEDIUM_DESCR\",\"newName\":\"MEDIUM_DESCR\",\"indexOrder\":2,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"619cfeb6-5855-4827-8aa0-12e8ae9cc0a0\"},\"7b3cde18-0262-4103-961b-302998636d4a\":{\"classDefinition\":\"sap.cdw.commonmodel.ElementMapping\",\"source\":\"3733c3f0-01e2-4017-8b71-57fc967ce73a\",\"target\":\"08095c96-15e1-4e63-a5fc-382ca3af32dd\"},\"ecf2b22b-55e5-4944-9992-1be389b59c4b\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"TRANSACTIONID\",\"label\":\"TRANSACTIONID\",\"newName\":\"TRANSACTIONID\",\"indexOrder\":0,\"isKey\":true,\"dataType\":\"cds.Integer64\",\"length\":0,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true,\"successorElement\":\"458934df-f43f-4fcb-8478-9062c06abf19\"},\"cd03b0e1-c74e-471c-875e-5389c85756ce\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"ACCOUNTID\",\"label\":\"ACCOUNTID\",\"newName\":\"ACCOUNTID\",\"indexOrder\":2,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"25f12eb1-0baf-4176-90e3-fbee739ceb66\"},\"acd747f1-1d25-4e3b-a533-0a3acee1dee3\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"ACCOUNTTYPEID\",\"label\":\"ACCOUNTTYPEID\",\"newName\":\"ACCOUNTTYPEID\",\"indexOrder\":4,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"149fb719-3cc0-44fc-83b9-36c091e4dfe0\"},\"1f7cbbda-0bee-44c8-9419-929c1c9fb91e\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"CUSTOMERID\",\"label\":\"CUSTOMERID\",\"newName\":\"CUSTOMERID\",\"indexOrder\":6,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"b2a23ca5-232f-47f8-a657-0af0d4d59cea\"},\"f3645b8f-6fbb-4074-9fc3-54eb0cf98773\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"CUSTOMERTYPEID\",\"label\":\"CUSTOMERTYPEID\",\"newName\":\"CUSTOMERTYPEID\",\"indexOrder\":7,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"ec5e941a-cb8f-4e0d-9dec-b5e5d55e761e\"},\"c5fc3bfd-ab7e-4e07-aa1c-846215fbd0aa\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"PRODUCTID\",\"label\":\"PRODUCTID\",\"newName\":\"PRODUCTID\",\"indexOrder\":8,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"ca153458-5df9-48e3-93b5-e06bbf117997\"},\"e496def3-ab07-4ee2-911f-509f8247d957\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"PRODUCTCATEGORYID\",\"label\":\"PRODUCTCATEGORYID\",\"newName\":\"PRODUCTCATEGORYID\",\"indexOrder\":9,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"85fedb7c-c5ef-4cdb-91d7-cdc28f3645ab\"},\"f1bc146a-9ac5-4361-9617-0b5e446bef2f\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"PROFITCENTERID\",\"label\":\"PROFITCENTERID\",\"newName\":\"PROFITCENTERID\",\"indexOrder\":10,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"9a2bc1ed-2bf5-4343-8b3d-f284fea2244d\"},\"0ea76c73-26dd-4d39-8756-09bb39dc86b5\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"VERSION\",\"label\":\"VERSION\",\"newName\":\"VERSION\",\"indexOrder\":11,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"71212bfe-7eb0-4d96-85a5-3f78d00a2c3b\"},\"aae2d6d3-b6cb-4ac8-a88f-c10ac33e3521\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"DATE\",\"label\":\"DATE\",\"newName\":\"DATE\",\"indexOrder\":12,\"dataType\":\"cds.Date\",\"length\":0,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"786aae44-5dac-48b1-b08c-f4e85362af63\"},\"97235f18-d2ed-4d83-88b0-1fac59959a40\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"VALUE\",\"label\":\"VALUE\",\"newName\":\"VALUE\",\"indexOrder\":13,\"dataType\":\"cds.Decimal\",\"length\":0,\"precision\":38,\"scale\":19,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"77ed9b45-f62e-4235-8525-2014f83023a6\"},\"8be59ae2-ae75-4701-9182-47bdc44dfac5\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"ACCOUNTID\",\"label\":\"ACCOUNTID\",\"newName\":\"ACCOUNTID\",\"indexOrder\":1,\"isKey\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true,\"successorElement\":\"bc22089a-072d-4afe-baf1-2d5b00eec7ba\"},\"7359928f-9a3c-4439-aa05-e09acd71b24e\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"LANGUAGE\",\"label\":\"LANGUAGE\",\"newName\":\"LANGUAGE\",\"indexOrder\":3,\"isKey\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true,\"successorElement\":\"52cedd32-fd9a-41ad-86f7-f0ed5170f26c\"},\"06df2422-e056-4b9d-9420-824fa2cf1502\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"MEDIUM_DESCR\",\"label\":\"MEDIUM_DESCR\",\"newName\":\"MEDIUM_DESCR\",\"indexOrder\":5,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"cd9d4834-841f-4e50-9a37-bfafb4a1f543\"},\"25d7aa5c-bd74-4369-8bdc-629ab056bece\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"TRANSACTIONID\",\"label\":\"TRANSACTIONID\",\"newName\":\"TRANSACTIONID\",\"indexOrder\":0,\"isKey\":true,\"dataType\":\"cds.Integer64\",\"length\":0,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true,\"successorElement\":\"c486245c-365c-4e60-b648-11784a61cde0\"},\"e121ab34-275e-4780-ac7c-fdc87898a344\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"ACCOUNTID\",\"label\":\"ACCOUNTID\",\"newName\":\"ACCOUNTID\",\"isRemoved\":true,\"indexOrder\":3,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false},\"7387e2ee-a4c6-4337-aa1b-ee8c4dbb4c58\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"ACCOUNTTYPEID\",\"label\":\"ACCOUNTTYPEID\",\"newName\":\"ACCOUNTTYPEID\",\"indexOrder\":6,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"42aa4d34-c0cb-4d3c-be4a-b69836eacada\"},\"61244281-37d2-42d2-b47b-f394807d4378\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"CUSTOMERID\",\"label\":\"CUSTOMERID\",\"newName\":\"CUSTOMERID\",\"indexOrder\":9,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"a8f0dff2-9152-409d-9a29-dc4b5baa9d6c\"},\"da2bfd8e-48e8-4c57-b15c-f8eb78f97c29\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"CUSTOMERTYPEID\",\"label\":\"CUSTOMERTYPEID\",\"newName\":\"CUSTOMERTYPEID\",\"indexOrder\":11,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"3be3486b-51c1-441d-9452-3d0e8d689d53\"},\"3c5ae46b-c72a-4a8b-9a92-f9066cfbf096\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"PRODUCTID\",\"label\":\"PRODUCTID\",\"newName\":\"PRODUCTID\",\"indexOrder\":13,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"91ccd7ed-31ae-4105-885e-594d72685328\"},\"b603ba46-3750-4543-89ea-82eee5b706e8\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"PRODUCTCATEGORYID\",\"label\":\"PRODUCTCATEGORYID\",\"newName\":\"PRODUCTCATEGORYID\",\"indexOrder\":14,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"7f5c1a95-8355-4471-8d3c-e31e20d96f99\"},\"7ea5e414-5ab7-4065-af13-bfe6fe98894f\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"PROFITCENTERID\",\"label\":\"PROFITCENTERID\",\"newName\":\"PROFITCENTERID\",\"isRemoved\":true,\"indexOrder\":15,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false},\"47749403-54aa-48ff-b6b1-5da336e1d377\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"VERSION\",\"label\":\"VERSION\",\"newName\":\"VERSION\",\"indexOrder\":16,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"03e9f9c4-77a3-4b44-aba2-33702bc37d12\"},\"321fbc7e-21b4-484d-a8f1-e81fb1acfa08\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"DATE\",\"label\":\"DATE\",\"newName\":\"DATE\",\"indexOrder\":17,\"dataType\":\"cds.Date\",\"length\":0,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"17f0a7e8-9bc1-4ba5-8597-b256f1c520d5\"},\"16471383-4ea3-446f-ae5e-e873cf0fa90e\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"VALUE\",\"label\":\"VALUE\",\"newName\":\"VALUE\",\"indexOrder\":18,\"dataType\":\"cds.Decimal\",\"length\":0,\"precision\":38,\"scale\":19,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"b58edd4e-e30a-40fa-90c0-7e6698a3b001\"},\"b7f2647c-dc05-47b2-877d-3a46d415e0aa\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"ACCOUNTID\",\"label\":\"ACCOUNTID\",\"newName\":\"ACCOUNTID\",\"indexOrder\":1,\"isKey\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true,\"successorElement\":\"8aad18d7-4d43-4feb-9a3d-d644cbd4ac13\"},\"5b7b2452-ce3f-4301-9d08-6e7df34dc40d\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"LANGUAGE\",\"label\":\"LANGUAGE\",\"newName\":\"LANGUAGE\",\"indexOrder\":4,\"isKey\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true,\"successorElement\":\"92f9ec8a-9f1e-4f5e-b62f-f7909e31c64d\"},\"6b88eae4-2a9d-435b-bd31-ccb75babd98b\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"MEDIUM_DESCR\",\"label\":\"Account Name\",\"newName\":\"Account_Name\",\"indexOrder\":7,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"8639ad5c-badf-4ae0-9179-228121281bca\"},\"fccfd6b6-b985-41f7-87a5-86fc40e17d44\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"PROFITCENTERID\",\"label\":\"PROFITCENTERID\",\"newName\":\"PROFITCENTERID\",\"indexOrder\":2,\"isKey\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true,\"successorElement\":\"47bf80d1-5969-4cef-ae9b-cb1dc51abd99\"},\"eb27a6c9-f7a0-44ac-8f94-7e30e074c272\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"LANGUAGE\",\"label\":\"LANGUAGE\",\"newName\":\"LANGUAGE\",\"isRemoved\":true,\"indexOrder\":5,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false},\"7a650474-d865-462b-bb41-a61afa65114e\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"SHORT_DESCR\",\"label\":\"SHORT_DESCR\",\"newName\":\"SHORT_DESCR\",\"indexOrder\":8,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"f67ff303-7e31-4855-924c-9e12088d2ac4\"},\"0b272440-6bae-47dc-82eb-80970ddcc7c6\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"MEDIUM_DESCR\",\"label\":\"Profit Center Name\",\"newName\":\"Profit_Center_Name\",\"indexOrder\":10,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"921dffd7-b3bb-483d-88d9-6c070f26bc52\"},\"c126b13c-46cc-4ab0-a479-f9c66002728b\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"LONG_DESCR\",\"label\":\"LONG_DESCR\",\"newName\":\"LONG_DESCR\",\"indexOrder\":12,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"dbc71ee7-d51d-455a-8c93-18a310a3bf00\"},\"08095c96-15e1-4e63-a5fc-382ca3af32dd\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"ACCOUNTID\",\"label\":\"ACCOUNTID\",\"newName\":\"ACCOUNTID\",\"indexOrder\":0,\"isKey\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true,\"successorElement\":\"8be59ae2-ae75-4701-9182-47bdc44dfac5\"},\"a09e8aad-f25c-4b47-92f2-ada6bd29ea4e\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"LANGUAGE\",\"label\":\"LANGUAGE\",\"newName\":\"LANGUAGE\",\"indexOrder\":1,\"isKey\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true,\"successorElement\":\"7359928f-9a3c-4439-aa05-e09acd71b24e\"},\"619cfeb6-5855-4827-8aa0-12e8ae9cc0a0\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"MEDIUM_DESCR\",\"label\":\"MEDIUM_DESCR\",\"newName\":\"MEDIUM_DESCR\",\"indexOrder\":2,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"06df2422-e056-4b9d-9420-824fa2cf1502\"},\"1a5a72d4-bbf5-4701-9604-d01717ec1420\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"PROFITCENTERID\",\"label\":\"PROFITCENTERID\",\"newName\":\"PROFITCENTERID\",\"indexOrder\":0,\"isKey\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true,\"successorElement\":\"e000bcee-0dd2-4124-a3bf-0ed4394504a3\"},\"ce4028fc-0754-4f02-92ed-b9f46bbfc4b8\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"LANGUAGE\",\"label\":\"LANGUAGE\",\"newName\":\"LANGUAGE\",\"indexOrder\":1,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"6254db9c-5440-4d92-bbf2-79384a13c93f\"},\"071815b3-d45f-4867-a327-1c443db5ab80\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"SHORT_DESCR\",\"label\":\"SHORT_DESCR\",\"newName\":\"SHORT_DESCR\",\"indexOrder\":2,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"aac94046-104b-413c-acd3-2645e21d74f8\"},\"25925080-29e1-4de6-987b-27200c1d999b\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"MEDIUM_DESCR\",\"label\":\"MEDIUM_DESCR\",\"newName\":\"MEDIUM_DESCR\",\"indexOrder\":3,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"6a815650-af69-4b8f-a8e4-001c4bd2011f\"},\"638f7189-a6d0-499b-b764-ef58e5f3c2bb\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"LONG_DESCR\",\"label\":\"LONG_DESCR\",\"newName\":\"LONG_DESCR\",\"indexOrder\":4,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"2b34e7f9-f176-4974-a489-b9db0aba3492\"},\"e662eb39-2491-4475-93e3-495a77a559c2\":{\"classDefinition\":\"sap.cdw.commonmodel.ElementMapping\",\"source\":\"f1bc146a-9ac5-4361-9617-0b5e446bef2f\",\"target\":\"e000bcee-0dd2-4124-a3bf-0ed4394504a3\"},\"458934df-f43f-4fcb-8478-9062c06abf19\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"TRANSACTIONID\",\"label\":\"TRANSACTIONID\",\"newName\":\"TRANSACTIONID\",\"indexOrder\":0,\"isKey\":true,\"dataType\":\"cds.Integer64\",\"length\":0,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true,\"successorElement\":\"25d7aa5c-bd74-4369-8bdc-629ab056bece\"},\"25f12eb1-0baf-4176-90e3-fbee739ceb66\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"ACCOUNTID\",\"label\":\"ACCOUNTID\",\"newName\":\"ACCOUNTID\",\"indexOrder\":4,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"e121ab34-275e-4780-ac7c-fdc87898a344\"},\"149fb719-3cc0-44fc-83b9-36c091e4dfe0\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"ACCOUNTTYPEID\",\"label\":\"ACCOUNTTYPEID\",\"newName\":\"ACCOUNTTYPEID\",\"indexOrder\":8,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"7387e2ee-a4c6-4337-aa1b-ee8c4dbb4c58\"},\"b2a23ca5-232f-47f8-a657-0af0d4d59cea\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"CUSTOMERID\",\"label\":\"CUSTOMERID\",\"newName\":\"CUSTOMERID\",\"indexOrder\":11,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"61244281-37d2-42d2-b47b-f394807d4378\"},\"ec5e941a-cb8f-4e0d-9dec-b5e5d55e761e\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"CUSTOMERTYPEID\",\"label\":\"CUSTOMERTYPEID\",\"newName\":\"CUSTOMERTYPEID\",\"indexOrder\":12,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"da2bfd8e-48e8-4c57-b15c-f8eb78f97c29\"},\"ca153458-5df9-48e3-93b5-e06bbf117997\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"PRODUCTID\",\"label\":\"PRODUCTID\",\"newName\":\"PRODUCTID\",\"indexOrder\":13,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"3c5ae46b-c72a-4a8b-9a92-f9066cfbf096\"},\"85fedb7c-c5ef-4cdb-91d7-cdc28f3645ab\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"PRODUCTCATEGORYID\",\"label\":\"PRODUCTCATEGORYID\",\"newName\":\"PRODUCTCATEGORYID\",\"indexOrder\":14,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"b603ba46-3750-4543-89ea-82eee5b706e8\"},\"9a2bc1ed-2bf5-4343-8b3d-f284fea2244d\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"PROFITCENTERID\",\"label\":\"PROFITCENTERID\",\"newName\":\"PROFITCENTERID\",\"indexOrder\":15,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"7ea5e414-5ab7-4065-af13-bfe6fe98894f\"},\"71212bfe-7eb0-4d96-85a5-3f78d00a2c3b\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"VERSION\",\"label\":\"VERSION\",\"newName\":\"VERSION\",\"indexOrder\":16,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"47749403-54aa-48ff-b6b1-5da336e1d377\"},\"786aae44-5dac-48b1-b08c-f4e85362af63\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"DATE\",\"label\":\"DATE\",\"newName\":\"DATE\",\"indexOrder\":17,\"dataType\":\"cds.Date\",\"length\":0,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"321fbc7e-21b4-484d-a8f1-e81fb1acfa08\"},\"77ed9b45-f62e-4235-8525-2014f83023a6\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"VALUE\",\"label\":\"VALUE\",\"newName\":\"VALUE\",\"indexOrder\":18,\"dataType\":\"cds.Decimal\",\"length\":0,\"precision\":38,\"scale\":19,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"16471383-4ea3-446f-ae5e-e873cf0fa90e\"},\"bc22089a-072d-4afe-baf1-2d5b00eec7ba\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"ACCOUNTID\",\"label\":\"ACCOUNTID\",\"newName\":\"ACCOUNTID\",\"indexOrder\":2,\"isKey\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true,\"successorElement\":\"b7f2647c-dc05-47b2-877d-3a46d415e0aa\"},\"52cedd32-fd9a-41ad-86f7-f0ed5170f26c\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"LANGUAGE\",\"label\":\"LANGUAGE\",\"newName\":\"LANGUAGE\",\"indexOrder\":6,\"isKey\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true,\"successorElement\":\"5b7b2452-ce3f-4301-9d08-6e7df34dc40d\"},\"cd9d4834-841f-4e50-9a37-bfafb4a1f543\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"MEDIUM_DESCR\",\"label\":\"MEDIUM_DESCR\",\"newName\":\"MEDIUM_DESCR\",\"indexOrder\":10,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"6b88eae4-2a9d-435b-bd31-ccb75babd98b\"},\"9cadc799-989b-4f51-bf4a-415f6d58c1e0\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"PROFITCENTERID\",\"label\":\"PROFITCENTERID\",\"newName\":\"PROFITCENTERID\",\"indexOrder\":1,\"isKey\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true,\"successorElement\":\"fccfd6b6-b985-41f7-87a5-86fc40e17d44\"},\"b3534e59-a8d5-450d-8199-cbd0c81414fc\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"LANGUAGE\",\"label\":\"LANGUAGE\",\"newName\":\"LANGUAGE\",\"indexOrder\":3,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"eb27a6c9-f7a0-44ac-8f94-7e30e074c272\"},\"06cb136b-b91e-45b1-bcc8-64b1ce9e37c4\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"SHORT_DESCR\",\"label\":\"SHORT_DESCR\",\"newName\":\"SHORT_DESCR\",\"indexOrder\":5,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"7a650474-d865-462b-bb41-a61afa65114e\"},\"49557384-2eb6-4b74-b9c5-a2ab9c01b705\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"MEDIUM_DESCR\",\"label\":\"MEDIUM_DESCR\",\"newName\":\"MEDIUM_DESCR\",\"indexOrder\":7,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"0b272440-6bae-47dc-82eb-80970ddcc7c6\"},\"b7c602d1-7b1b-41d3-a263-9abc1203f0da\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"LONG_DESCR\",\"label\":\"LONG_DESCR\",\"newName\":\"LONG_DESCR\",\"indexOrder\":9,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"c126b13c-46cc-4ab0-a479-f9c66002728b\"},\"e000bcee-0dd2-4124-a3bf-0ed4394504a3\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"PROFITCENTERID\",\"label\":\"PROFITCENTERID\",\"newName\":\"PROFITCENTERID\",\"indexOrder\":0,\"isKey\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true,\"successorElement\":\"9cadc799-989b-4f51-bf4a-415f6d58c1e0\"},\"6254db9c-5440-4d92-bbf2-79384a13c93f\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"LANGUAGE\",\"label\":\"LANGUAGE\",\"newName\":\"LANGUAGE\",\"indexOrder\":1,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"b3534e59-a8d5-450d-8199-cbd0c81414fc\"},\"aac94046-104b-413c-acd3-2645e21d74f8\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"SHORT_DESCR\",\"label\":\"SHORT_DESCR\",\"newName\":\"SHORT_DESCR\",\"indexOrder\":2,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"06cb136b-b91e-45b1-bcc8-64b1ce9e37c4\"},\"6a815650-af69-4b8f-a8e4-001c4bd2011f\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"MEDIUM_DESCR\",\"label\":\"MEDIUM_DESCR\",\"newName\":\"MEDIUM_DESCR\",\"indexOrder\":3,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"49557384-2eb6-4b74-b9c5-a2ab9c01b705\"},\"2b34e7f9-f176-4974-a489-b9db0aba3492\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"LONG_DESCR\",\"label\":\"LONG_DESCR\",\"newName\":\"LONG_DESCR\",\"indexOrder\":4,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"b7c602d1-7b1b-41d3-a263-9abc1203f0da\"},\"c486245c-365c-4e60-b648-11784a61cde0\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"TRANSACTIONID\",\"label\":\"TRANSACTIONID\",\"newName\":\"TRANSACTIONID\",\"indexOrder\":0,\"expression\":\"TRANSACTIONID\",\"isCalculated\":true,\"isKey\":true,\"dataType\":\"cds.Integer64\",\"length\":0,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true,\"successorElement\":\"5954c88b-f036-4616-8fc7-616e77535e59\"},\"42aa4d34-c0cb-4d3c-be4a-b69836eacada\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"ACCOUNTTYPEID\",\"label\":\"ACCOUNTTYPEID\",\"newName\":\"ACCOUNTTYPEID\",\"indexOrder\":6,\"expression\":\"ACCOUNTTYPEID\",\"isCalculated\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"0c05ec92-89d1-434a-8150-b5f4fb6cfbf8\"},\"a8f0dff2-9152-409d-9a29-dc4b5baa9d6c\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"CUSTOMERID\",\"label\":\"CUSTOMERID\",\"newName\":\"CUSTOMERID\",\"indexOrder\":9,\"expression\":\"CUSTOMERID\",\"isCalculated\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"54c2abee-6f25-45f1-b986-65bad1c025a5\"},\"3be3486b-51c1-441d-9452-3d0e8d689d53\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"CUSTOMERTYPEID\",\"label\":\"CUSTOMERTYPEID\",\"newName\":\"CUSTOMERTYPEID\",\"indexOrder\":11,\"expression\":\"CUSTOMERTYPEID\",\"isCalculated\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"8708d953-e5a7-468b-b75d-999305990fbd\"},\"91ccd7ed-31ae-4105-885e-594d72685328\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"PRODUCTID\",\"label\":\"PRODUCTID\",\"newName\":\"PRODUCTID\",\"indexOrder\":13,\"expression\":\"PRODUCTID\",\"isCalculated\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"4347cb45-fe70-4fe6-bb58-dbf4a2b6c0d9\"},\"7f5c1a95-8355-4471-8d3c-e31e20d96f99\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"PRODUCTCATEGORYID\",\"label\":\"PRODUCTCATEGORYID\",\"newName\":\"PRODUCTCATEGORYID\",\"indexOrder\":14,\"expression\":\"PRODUCTCATEGORYID\",\"isCalculated\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"4e352d94-bfe2-433f-8961-ec30db0e820d\"},\"03e9f9c4-77a3-4b44-aba2-33702bc37d12\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"VERSION\",\"label\":\"VERSION\",\"newName\":\"VERSION\",\"indexOrder\":16,\"expression\":\"VERSION\",\"isCalculated\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"92bf5e68-7970-4732-bdb9-f5cbc92c78f8\"},\"17f0a7e8-9bc1-4ba5-8597-b256f1c520d5\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"DATE\",\"label\":\"DATE\",\"newName\":\"DATE\",\"indexOrder\":17,\"expression\":\"DATE\",\"isCalculated\":true,\"dataType\":\"cds.Date\",\"length\":0,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"e9e78531-1f67-4f04-a838-908ee56c1fb6\"},\"b58edd4e-e30a-40fa-90c0-7e6698a3b001\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"VALUE\",\"label\":\"VALUE\",\"newName\":\"VALUE\",\"indexOrder\":19,\"expression\":\"VALUE\",\"isCalculated\":true,\"dataType\":\"cds.Decimal\",\"length\":0,\"precision\":38,\"scale\":19,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"1abeb695-e0e3-4f4b-8520-487c18a67842\"},\"8aad18d7-4d43-4feb-9a3d-d644cbd4ac13\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"ACCOUNTID\",\"label\":\"ACCOUNTID\",\"newName\":\"ACCOUNTID\",\"indexOrder\":1,\"expression\":\"ACCOUNTID\",\"isCalculated\":true,\"isKey\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true,\"successorElement\":\"30a9bbbd-ac60-4ad0-adea-53d8ed4693ca\"},\"92f9ec8a-9f1e-4f5e-b62f-f7909e31c64d\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"LANGUAGE\",\"label\":\"LANGUAGE\",\"newName\":\"LANGUAGE\",\"indexOrder\":4,\"expression\":\"LANGUAGE\",\"isCalculated\":true,\"isKey\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true,\"successorElement\":\"c95e976f-a13a-418b-84eb-265d5bf5a1d5\"},\"8639ad5c-badf-4ae0-9179-228121281bca\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"MEDIUM_DESCR\",\"label\":\"Account Name\",\"newName\":\"Account_Name\",\"indexOrder\":7,\"expression\":\"Account_Name\",\"isCalculated\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"84dc2fd0-f9d1-4e0b-93c3-640204d4d2bc\"},\"47bf80d1-5969-4cef-ae9b-cb1dc51abd99\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"PROFITCENTERID\",\"label\":\"PROFITCENTERID\",\"newName\":\"PROFITCENTERID\",\"indexOrder\":2,\"expression\":\"PROFITCENTERID\",\"isCalculated\":true,\"isKey\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"isNotNull\":true,\"successorElement\":\"968ea989-82df-4baa-ad82-51b8ed672ea0\"},\"f67ff303-7e31-4855-924c-9e12088d2ac4\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"SHORT_DESCR\",\"label\":\"SHORT_DESCR\",\"newName\":\"SHORT_DESCR\",\"indexOrder\":8,\"expression\":\"SHORT_DESCR\",\"isCalculated\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"44ef944b-1afb-4558-acd3-d76fb2b85fa5\"},\"921dffd7-b3bb-483d-88d9-6c070f26bc52\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"MEDIUM_DESCR\",\"label\":\"Profit Center Name\",\"newName\":\"Profit_Center_Name\",\"indexOrder\":10,\"expression\":\"Profit_Center_Name\",\"isCalculated\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"9189313f-2adb-4c87-a719-7cc5ac2e22c8\"},\"dbc71ee7-d51d-455a-8c93-18a310a3bf00\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"LONG_DESCR\",\"label\":\"LONG_DESCR\",\"newName\":\"LONG_DESCR\",\"indexOrder\":12,\"expression\":\"LONG_DESCR\",\"isCalculated\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"bc3b67b6-fd74-4955-8da1-be82616c5ace\"},\"178c7cd2-d3f4-4111-9170-99d9680b8b2a\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"Calculated_1\",\"label\":\"ACTUAL_AMOUNT\",\"newName\":\"ACTUAL_AMOUNT\",\"indexOrder\":16,\"expression\":\"CASE\\n    WHEN \\\"VERSION\\\" = 'Actual' THEN \\\"VALUE\\\"\\n    ELSE 0\\nEND\",\"isCalculated\":true,\"dataType\":\"cds.Decimal\",\"length\":0,\"precision\":38,\"scale\":19,\"precisionsTable\":\"SAP.CURRENCY.VIEW.TCURX\",\"configurationTable\":\"SAP.CURRENCY.VIEW.TCURV\",\"prefactorsTable\":\"SAP.CURRENCY.VIEW.TCURF\",\"ratesTable\":\"SAP.CURRENCY.VIEW.TCURR\",\"notationsTable\":\"SAP.CURRENCY.VIEW.TCURN\",\"conversionCodesTable\":\"SAP.CURRENCY.VIEW.TCURC\",\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"c12c9ce4-e208-4262-ad42-6e3345746adb\"},\"c1eafbf9-2c2b-4d5c-8236-8884da85d695\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"Calculated_1\",\"label\":\"BUDGET_AMOUNT\",\"newName\":\"BUDGET_AMOUNT\",\"indexOrder\":16,\"expression\":\"CASE\\n    WHEN \\\"VERSION\\\" = 'Budget' THEN \\\"VALUE\\\"\\n    ELSE 0\\nEND\",\"isCalculated\":true,\"dataType\":\"cds.Decimal\",\"length\":0,\"precision\":38,\"scale\":19,\"precisionsTable\":\"SAP.CURRENCY.VIEW.TCURX\",\"configurationTable\":\"SAP.CURRENCY.VIEW.TCURV\",\"prefactorsTable\":\"SAP.CURRENCY.VIEW.TCURF\",\"ratesTable\":\"SAP.CURRENCY.VIEW.TCURR\",\"notationsTable\":\"SAP.CURRENCY.VIEW.TCURN\",\"conversionCodesTable\":\"SAP.CURRENCY.VIEW.TCURC\",\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"c0fbb93a-3cb1-4abb-88a7-a039f76c03a8\"},\"bf9b839d-2383-448a-b490-e8906f6c1b56\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"Calculated_1\",\"label\":\"Budget Record Count\",\"newName\":\"BUDGET_RECORD_COUNT\",\"indexOrder\":18,\"expression\":\"CASE\\n    WHEN \\\"VERSION\\\" = 'Budget' THEN 1\\n    ELSE 0\\nEND\",\"isCalculated\":true,\"dataType\":\"cds.Integer\",\"length\":0,\"precision\":0,\"scale\":0,\"precisionsTable\":\"SAP.CURRENCY.VIEW.TCURX\",\"configurationTable\":\"SAP.CURRENCY.VIEW.TCURV\",\"prefactorsTable\":\"SAP.CURRENCY.VIEW.TCURF\",\"ratesTable\":\"SAP.CURRENCY.VIEW.TCURR\",\"notationsTable\":\"SAP.CURRENCY.VIEW.TCURN\",\"conversionCodesTable\":\"SAP.CURRENCY.VIEW.TCURC\",\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"0650793e-5f78-4ddb-9ef6-448f48c80432\"},\"3b6a6e5f-2e16-421e-9eaa-8bc367a2ae07\":{\"classDefinition\":\"sap.cdw.querybuilder.Element\",\"name\":\"Calculated_1\",\"label\":\"Month\",\"newName\":\"Month\",\"indexOrder\":19,\"expression\":\"TO_VARCHAR(\\\"DATE\\\", 'MM')\",\"isCalculated\":true,\"length\":5000,\"precision\":0,\"scale\":0,\"precisionsTable\":\"SAP.CURRENCY.VIEW.TCURX\",\"configurationTable\":\"SAP.CURRENCY.VIEW.TCURV\",\"prefactorsTable\":\"SAP.CURRENCY.VIEW.TCURF\",\"ratesTable\":\"SAP.CURRENCY.VIEW.TCURR\",\"notationsTable\":\"SAP.CURRENCY.VIEW.TCURN\",\"conversionCodesTable\":\"SAP.CURRENCY.VIEW.TCURC\",\"isMeasureBeforeAI\":false,\"isMeasureAI\":false,\"isNotNullBeforeAI\":false,\"isKeyBeforeAI\":false,\"isKeyAI\":false,\"successorElement\":\"3d32e56e-4d69-4c91-a07d-00b20fa60c74\"},\"9b7449a7-8ecb-4fb3-9d13-8f79e5ea32d6\":{\"classDefinition\":\"sap.cdw.querybuilder.ui.OutputSymbol\",\"x\":377.99999821186066,\"y\":-63.68498888121722,\"width\":140,\"height\":40,\"object\":\"7b0e0f0d-fd13-4a9c-983d-5a7947308ca8\"},\"5b6e0f12-bf52-40e6-b2ff-0c43a9d40de4\":{\"classDefinition\":\"sap.cdw.querybuilder.ui.EntitySymbol\",\"name\":\"Entity Symbol 1\",\"x\":-283.99999821186066,\"y\":75.44227263386955,\"width\":160,\"displayName\":\"Entity Symbol 1\",\"object\":\"832f30e7-f33c-4a66-871f-14d2fbb4dcf0\"},\"c28f7706-530c-4fe2-9138-c076f9ca3fe2\":{\"classDefinition\":\"sap.cdw.querybuilder.ui.JoinSymbol\",\"font\":\"bold 11px \\\"72\\\",\\\"72full\\\",Arial,Helvetica,sans-serif\",\"x\":-53.99999940395355,\"y\":74.1089393005362,\"object\":\"d8a34619-8b8c-42ec-97f3-c8b65067c2b9\"},\"7ef0ac34-4540-4448-8776-d0e8721304e1\":{\"classDefinition\":\"sap.cdw.querybuilder.ui.AssociationSymbol\",\"points\":\"-123.99999821186066,95.44227263386956 -53.99999940395355,95.44227263386956\",\"contentOffsetX\":5,\"contentOffsetY\":5,\"sourceSymbol\":\"5b6e0f12-bf52-40e6-b2ff-0c43a9d40de4\",\"targetSymbol\":\"c28f7706-530c-4fe2-9138-c076f9ca3fe2\",\"object\":\"d8a34619-8b8c-42ec-97f3-c8b65067c2b9\"},\"48a24b1d-f742-459f-bfda-a084a24cafb1\":{\"classDefinition\":\"sap.cdw.querybuilder.ui.EntitySymbol\",\"name\":\"Entity Symbol 2\",\"x\":-493.99999821186066,\"y\":-23.890272085665742,\"width\":160,\"displayName\":\"Entity Symbol 2\",\"object\":\"520def42-3cb6-4481-9714-f6ea592b54d6\"},\"ff72825e-8547-4827-9022-c94544b8a05a\":{\"classDefinition\":\"sap.cdw.querybuilder.ui.RenameSymbol\",\"font\":\"bold 11px \\\"72\\\",\\\"72full\\\",Arial,Helvetica,sans-serif\",\"x\":161.99999940395355,\"y\":-51.06100806965702,\"object\":\"6f79042a-48e9-494d-b0c1-24983be778ef\"},\"8f1b7071-3fa4-4f3b-a35d-593658752739\":{\"classDefinition\":\"sap.cdw.querybuilder.ui.FilterSymbol\",\"font\":\"bold 11px \\\"72\\\",\\\"72full\\\",Arial,Helvetica,sans-serif\",\"x\":-227.99999821186066,\"y\":-19.890272085665742,\"object\":\"996783e0-8b0d-4776-9639-014ee9b78297\"},\"5d8099b9-96ed-49f3-b775-8cfbe26a1428\":{\"classDefinition\":\"sap.cdw.querybuilder.ui.AssociationSymbol\",\"points\":\"-333.99999821186066,-3.8902720856657567 -227.99999821186066,-3.8902720856657567\",\"contentOffsetX\":5,\"contentOffsetY\":5,\"sourceSymbol\":\"48a24b1d-f742-459f-bfda-a084a24cafb1\",\"targetSymbol\":\"8f1b7071-3fa4-4f3b-a35d-593658752739\"},\"49408185-ea5b-4882-ae48-2b6b46ff6534\":{\"classDefinition\":\"sap.cdw.querybuilder.ui.AssociationSymbol\",\"isLeftInput\":false,\"points\":\"-179.99999821186066,-3.8902720856657567 -88.9999988079071,-3.8902720856657567 -88.9999988079071,84.77560596720288 -53.99999940395355,84.77560596720288\",\"contentOffsetX\":5,\"contentOffsetY\":5,\"sourceSymbol\":\"8f1b7071-3fa4-4f3b-a35d-593658752739\",\"targetSymbol\":\"c28f7706-530c-4fe2-9138-c076f9ca3fe2\",\"object\":\"d8a34619-8b8c-42ec-97f3-c8b65067c2b9\"},\"f36673f2-8c25-4b4e-8f80-cbc2b6cb89e5\":{\"classDefinition\":\"sap.cdw.querybuilder.ui.JoinSymbol\",\"font\":\"bold 11px \\\"72\\\",\\\"72full\\\",Arial,Helvetica,sans-serif\",\"x\":63.99999940395355,\"y\":-51.06100806965701,\"object\":\"a50f2d95-4d4c-47ee-9d98-5d66f544d361\"},\"fe267f76-39f2-479d-bb44-0f04d4472c1f\":{\"classDefinition\":\"sap.cdw.querybuilder.ui.AssociationSymbol\",\"points\":\"-5.999999403953552,90.10893930053622 29,90.10893930053622 29,-29.727674736323678 63.99999940395355,-29.727674736323678\",\"contentOffsetX\":5,\"contentOffsetY\":5,\"sourceSymbol\":\"c28f7706-530c-4fe2-9138-c076f9ca3fe2\",\"targetSymbol\":\"f36673f2-8c25-4b4e-8f80-cbc2b6cb89e5\",\"object\":\"a50f2d95-4d4c-47ee-9d98-5d66f544d361\"},\"e62ad770-5819-453f-a23e-e6d2e1fc0553\":{\"classDefinition\":\"sap.cdw.querybuilder.ui.EntitySymbol\",\"name\":\"Entity Symbol 3\",\"x\":-283.99999821186066,\"y\":-115.44227263386955,\"width\":160,\"displayName\":\"Entity Symbol 3\",\"object\":\"0c481ac7-df23-4827-82e3-a2427c52a72f\"},\"7f5324b7-b674-4439-8d9e-3db8272ffd47\":{\"classDefinition\":\"sap.cdw.querybuilder.ui.AssociationSymbol\",\"points\":\"111.99999940395355,-35.06100806965701 161.99999940395355,-35.06100806965701\",\"contentOffsetX\":5,\"contentOffsetY\":5,\"sourceSymbol\":\"f36673f2-8c25-4b4e-8f80-cbc2b6cb89e5\",\"targetSymbol\":\"ff72825e-8547-4827-9022-c94544b8a05a\"},\"e8aca213-a11c-4637-8a2f-1cc9054aa082\":{\"classDefinition\":\"sap.cdw.querybuilder.ui.FilterSymbol\",\"font\":\"bold 11px \\\"72\\\",\\\"72full\\\",Arial,Helvetica,sans-serif\",\"x\":-53.99999940395355,\"y\":-78.22237136260074,\"object\":\"06d2d8df-0fdd-4516-9c8b-daed2a8b4eab\"},\"325a8b1e-da08-41fb-be1f-55bfac8a6d23\":{\"classDefinition\":\"sap.cdw.querybuilder.ui.AssociationSymbol\",\"points\":\"-123.99999821186066,-95.44227263386956 -88.9999988079071,-95.44227263386956 -88.9999988079071,-62.22237136260074 -53.99999940395355,-62.22237136260074\",\"contentOffsetX\":5,\"contentOffsetY\":5,\"sourceSymbol\":\"e62ad770-5819-453f-a23e-e6d2e1fc0553\",\"targetSymbol\":\"e8aca213-a11c-4637-8a2f-1cc9054aa082\"},\"afafbe7e-310f-4ce1-b391-f569b529e1ad\":{\"classDefinition\":\"sap.cdw.querybuilder.ui.AssociationSymbol\",\"isLeftInput\":false,\"points\":\"-5.999999403953552,-62.22237136260074 29,-62.22237136260074 29,-40.39434140299035 63.99999940395355,-40.39434140299035\",\"contentOffsetX\":5,\"contentOffsetY\":5,\"sourceSymbol\":\"e8aca213-a11c-4637-8a2f-1cc9054aa082\",\"targetSymbol\":\"f36673f2-8c25-4b4e-8f80-cbc2b6cb89e5\",\"object\":\"a50f2d95-4d4c-47ee-9d98-5d66f544d361\"},\"602d9f4f-aa80-48f5-b817-26b0d9a9291e\":{\"classDefinition\":\"sap.cdw.querybuilder.ui.CalculatedSymbol\",\"font\":\"bold 11px \\\"72\\\",\\\"72full\\\",Arial,Helvetica,sans-serif\",\"x\":279.99999821186066,\"y\":-59.68498888121722,\"object\":\"af216bc2-09e2-424e-8b63-eb41d474270c\"},\"5e769f59-6d2c-445f-ba1d-3f7bf3d1f6c1\":{\"classDefinition\":\"sap.cdw.querybuilder.ui.AssociationSymbol\",\"points\":\"209.99999940395355,-35.06100806965701 244.9999988079071,-35.06100806965701 244.9999988079071,-43.68498888121722 279.99999821186066,-43.68498888121722\",\"contentOffsetX\":5,\"contentOffsetY\":5,\"sourceSymbol\":\"ff72825e-8547-4827-9022-c94544b8a05a\",\"targetSymbol\":\"602d9f4f-aa80-48f5-b817-26b0d9a9291e\"},\"b995db78-8655-4135-9485-0730c0bf6380\":{\"classDefinition\":\"sap.cdw.querybuilder.ui.AssociationSymbol\",\"points\":\"327.99999821186066,-43.68498888121722 377.99999821186066,-43.68498888121722\",\"contentOffsetX\":5,\"contentOffsetY\":5,\"sourceSymbol\":\"602d9f4f-aa80-48f5-b817-26b0d9a9291e\",\"targetSymbol\":\"9b7449a7-8ecb-4fb3-9d13-8f79e5ea32d6\"}}}"
+    }
+  },
+  "$version": "1.0"
+}

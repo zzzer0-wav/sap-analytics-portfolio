@@ -1,0 +1,18 @@
+[
+  {
+    "file": "Sales/SalesOrderItems.csv",
+    "upstream_lines": 17819,
+    "local_lines": 17819,
+    "changed_lines": 0,
+    "trailing_whitespace_only": true,
+    "trimmed_lines_equal": true
+  },
+  {
+    "file": "Sales/SalesOrders.csv",
+    "upstream_lines": 5167,
+    "local_lines": 5167,
+    "changed_lines": 0,
+    "trailing_whitespace_only": true,
+    "trimmed_lines_equal": true
+  }
+]

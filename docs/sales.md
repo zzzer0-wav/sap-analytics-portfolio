@@ -70,11 +70,12 @@ The existing tutorial Story `GE381380_Sales_Analytics_Visualization` was adapted
 - Monthly Gross Sales: a time-series chart using OrderCreationDate at Month level.
 - Gross Sales by Customer Location: the existing geographical view, with a clearer title.
 - Sales by Country: all eight sample country labels with the three measures.
+- Grossamount by Country: a column chart comparing gross sales across the same eight country labels, included in the refreshed screenshot on 18 October 2026.
 - Year input control linked to the page widgets. The captured view selects 2022.
 
 ![SAC Sales Performance overview, 2022](../Screenshots/sac_sales_overview.png)
 
-![SAC country details, 2022](../Screenshots/sac_sales_country_details.png)
+![SAC country table and gross-sales comparison chart, 2022](../Screenshots/sac_sales_country_details.png)
 
 ### Interaction checks
 

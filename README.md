@@ -34,11 +34,13 @@ The SAC dashboard shows annual KPI cards, monthly budget availability, and actua
 
 ## Sales — Performance Dashboard
 
-Adapted a SAC Story with three KPI cards, monthly gross sales, a customer-location map, and a country table. Year-filter checks matched Datasphere for 2021 and 2022; incomplete 2023 is excluded from the annual comparison. The screenshot shows 2022.
+Adapted a SAC Story with three KPI cards, monthly gross sales, a customer-location map, and a country table with a comparison chart. Year-filter checks matched Datasphere for 2021 and 2022; incomplete 2023 is excluded from the annual comparison. Both screenshots show 2022.
 
 ![SAP Analytics Cloud Sales Performance dashboard for 2022](Screenshots/sac_sales_overview.png)
 
-[Analytic model JSON](Models/SALES%20MODEL/Sales_Analytic_Model.json) · [Country table](Screenshots/sac_sales_country_details.png) · [Story details and validation](docs/sales.md#sap-analytics-cloud-story)
+![2022 sales by country: order count, average order value, and gross sales with a country comparison chart](Screenshots/sac_sales_country_details.png)
+
+[Analytic model JSON](Models/SALES%20MODEL/Sales_Analytic_Model.json) · [Story details and validation](docs/sales.md#sap-analytics-cloud-story)
 
 ## Explore the project
 
